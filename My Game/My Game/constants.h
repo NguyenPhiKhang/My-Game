@@ -31,8 +31,18 @@ const char SHIP_IMAGE[] = "Resources\\ship.png"; //picture of spaceship
 const char CLASS_NAME[] = "My Game";
 const char GAME_TITLE[] = "My Game";
 const bool FULLSCREEN = false;              // windowed or fullscreen
-const UINT GAME_WIDTH = 640;               // width of game in pixels
+const UINT GAME_WIDTH = 640;				// width of game in pixels
 const UINT GAME_HEIGHT = 480;               // height of game in pixels
+const int SHIP_START_FRAME = 0;				// starting frame of ship animaiton
+const int SHIP_END_FRAME = 3;				// last frame of ship animation
+const float SHIP_ANIMATION_DELAY = 0.2f;	// time between frames of ship animation
+const int SHIP_COLS = 2;					// ship texture has 2 columns
+const int SHIP_WIDTH = 32;					// width of ship image
+const int SHIP_HEIGHT = 32;					// height of ship image
+const float ROTATION_RATE = 180.0f;			// degrees per second
+const float SCALE_RATE = 0.2f;				// % change per second
+const float SHIP_SPEED = 100.0f;			// pixels per second
+const float SHIP_SCALE = 1.5f;				// starting ship scale
 
 // game
 const double PI = 3.14159265;

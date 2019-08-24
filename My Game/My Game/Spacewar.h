@@ -18,7 +18,7 @@ private:
 	TextureManager shipTexture;		// ship texture
 	Image   planet;                 // planet image
 	Image   nebula;                 // nebula image
-	Image ship1, ship2;
+	Image ship;
 
 public:
 	// Constructor
@@ -29,7 +29,7 @@ public:
 
 	// Initialize the game
 	void initialize(HWND hwnd);
-	void update();      // must override pure virtual from Game
+	void update(float frametime);      // must override pure virtual from Game
 	void ai();          // "
 	void collisions();  // "
 	void render();      // "

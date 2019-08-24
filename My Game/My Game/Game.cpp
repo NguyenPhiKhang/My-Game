@@ -34,12 +34,12 @@ LRESULT Game::messageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		switch (msg)
 		{
 		case WM_DESTROY:
-			PostQuitMessage(0);        //tell Windows to kill this program
+			PostQuitMessage(0);					  //tell Windows to kill this program
 			return 0;
 		//case WM_KEYDOWN: case WM_SYSKEYDOWN:    // key down
 		//	input->keyDown(wParam);
 		//	return 0;
-		//case WM_KEYUP: case WM_SYSKEYUP:        // key up
+		//case WM_KEYUP: case WM_SYSKEYUP:        // key up 
 		//	input->keyUp(wParam);
 		//	return 0;
 		//case WM_CHAR:                           // character entered
@@ -53,31 +53,31 @@ LRESULT Game::messageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		//	return 0;
 		//case WM_LBUTTONDOWN:                    // left mouse button down
 		//	input->setMouseLButton(true);
-		//	input->mouseIn(lParam);             // mouse position
+		//	input->mouseIn(lParam);				  // mouse position
 		//	return 0;
 		//case WM_LBUTTONUP:                      // left mouse button up
 		//	input->setMouseLButton(false);
-		//	input->mouseIn(lParam);             // mouse position
+		//	input->mouseIn(lParam);               // mouse position
 		//	return 0;
 		//case WM_MBUTTONDOWN:                    // middle mouse button down
 		//	input->setMouseMButton(true);
-		//	input->mouseIn(lParam);             // mouse position
+		//	input->mouseIn(lParam);               // mouse position
 		//	return 0;
 		//case WM_MBUTTONUP:                      // middle mouse button up
 		//	input->setMouseMButton(false);
-		//	input->mouseIn(lParam);             // mouse position
+		//	input->mouseIn(lParam);               // mouse position
 		//	return 0;
 		//case WM_RBUTTONDOWN:                    // right mouse button down
 		//	input->setMouseRButton(true);
-		//	input->mouseIn(lParam);             // mouse position
+		//	input->mouseIn(lParam);               // mouse position
 		//	return 0;
 		//case WM_RBUTTONUP:                      // right mouse button up
 		//	input->setMouseRButton(false);
-		//	input->mouseIn(lParam);             // mouse position
+		//	input->mouseIn(lParam);               // mouse position
 		//	return 0;
 		//case WM_XBUTTONDOWN: case WM_XBUTTONUP: // mouse X button down/up
 		//	input->setMouseXButton(wParam);
-		//	input->mouseIn(lParam);             // mouse position
+		//	input->mouseIn(lParam);               // mouse position
 		//	return 0;
 		//case WM_DEVICECHANGE:                   // check for controller insert
 		//	input->checkControllers();
@@ -218,7 +218,7 @@ void Game::run(HWND hwnd)
 	// These functions must be provided in the class that inherits from Game.
 	if (!paused)                    // if not paused
 	{
-		update();                   // update all game items
+		update(frameTime);                   // update all game items
 		ai();                       // artificial intelligence
 		collisions();               // handle collisions
 		//input->vibrateControllers(frameTime); // handle controller vibration

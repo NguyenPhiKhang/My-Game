@@ -29,7 +29,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	MSG msg;
 
 	// Create the game, sets up message handler
-	game = new Spacewar;
+	game = new Spacewar();
 
 	// Create the window
 	if (!CreateMainWindow(hwnd, hInstance, nCmdShow))

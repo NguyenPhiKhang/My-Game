@@ -30,6 +30,10 @@ void Spacewar::initialize(HWND hwnd)
 	if (!planetTexture.initialize(graphics, PLANET_IMAGE))
 		DebugOut("Error initializing planet texture");
 
+	// ship texture
+	if (!shipTexture.initialize(graphics, SHIP_IMAGE))
+		DebugOut("Error initializing ship texture");
+
 	// nebula
 	if (!nebula.initialize(graphics, 0, 0, 0, &nebulaTexture))
 		DebugOut("Error initializing nebula");
@@ -41,14 +45,35 @@ void Spacewar::initialize(HWND hwnd)
 	planet.setX(GAME_WIDTH * 0.5f - planet.getWidth() * 0.5f);
 	planet.setY(GAME_HEIGHT * 0.5f - planet.getHeight() * 0.5f);
 
+	// ship
+	if (!ship.initialize(graphics, SHIP_WIDTH, SHIP_HEIGHT, SHIP_COLS, &shipTexture))
+		DebugOut("Error initializing ship");
+	//ship.setX(GAME_WIDTH / 4);
+	ship.setY(GAME_HEIGHT / 4);
+	ship.setFrameDelay(SHIP_ANIMATION_DELAY);
+	ship.setFrames(SHIP_START_FRAME, SHIP_END_FRAME);
+	ship.setCurrentFrame(SHIP_START_FRAME);
+	ship.setDegrees(45.0f);
+	ship.setScale(SHIP_SCALE);
+
 	return;
 }
 
 //=============================================================================
 // Update all game items
 //=============================================================================
-void Spacewar::update()
-{}
+void Spacewar::update(float frametime)
+{
+	ship.update(frametime);
+	ship.setDegrees(ship.getDegrees() + frameTime * ROTATION_RATE);
+	ship.setScale(ship.getScale() - frameTime * SCALE_RATE);
+	ship.setX(ship.getX() + frameTime * SHIP_SPEED);
+	if (ship.getX() > GAME_WIDTH)
+	{
+		ship.setX(ship.getX() - GAME_WIDTH);
+		ship.setScale(SHIP_SCALE);
+	}
+}
 
 //=============================================================================
 // Artificial Intelligence
@@ -69,8 +94,9 @@ void Spacewar::render()
 {
 	graphics->spriteBegin();                // begin drawing sprites
 
-	nebula.draw();                         // add the orion nebula to the scene
+	nebula.draw();                          // add the orion nebula to the scene
 	planet.draw();                          // add the planet to the scene
+	ship.draw();							// add the ship to thte scene
 
 	graphics->spriteEnd();                  // end drawing sprites
 }
