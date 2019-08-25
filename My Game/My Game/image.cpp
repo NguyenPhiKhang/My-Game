@@ -19,6 +19,7 @@ Image::Image()
 	spriteData.texture = NULL;      // the sprite texture (picture)
 	spriteData.flipHorizontal = false;
 	spriteData.flipVertical = false;
+	spriteData.direction = D_RIGHT;
 	cols = 1;
 	textureManager = NULL;
 	startFrame = 0;

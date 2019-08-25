@@ -53,7 +53,7 @@ void Spacewar::initialize(HWND hwnd)
 	ship.setFrameDelay(SHIP_ANIMATION_DELAY);
 	ship.setFrames(SHIP_START_FRAME, SHIP_END_FRAME);
 	ship.setCurrentFrame(SHIP_START_FRAME);
-	ship.setDegrees(45.0f);
+	ship.setDegrees(0.0f);
 	ship.setScale(SHIP_SCALE);
 
 	return;
@@ -66,15 +66,28 @@ void Spacewar::update(float frametime)
 {
 	if (input->isKeyDown(SHIP_RIGHT_KEY))            // if move right
 	{
+		if (ship.getDirection() != D_RIGHT) {
+			ship.flipHorizontal(false);
+			//ship.setDegrees(360.0f);
+			ship.setDirection(D_RIGHT);
+		}
 		ship.setX(ship.getX() + frameTime * SHIP_SPEED);
 		if (ship.getX() > GAME_WIDTH)               // if off screen right
 			ship.setX((float)-ship.getWidth());     // position off screen left
+		DebugOut("[GET X] = %.2f\n", ship.getX());
 	}
 	if (input->isKeyDown(SHIP_LEFT_KEY))             // if move left
 	{
+		if (ship.getDirection() != D_LEFT)
+		{
+			ship.flipHorizontal(true);
+			//ship.setDegrees(180.0f);
+			ship.setDirection(D_LEFT);
+		}
 		ship.setX(ship.getX() - frameTime * SHIP_SPEED);
 		if (ship.getX() < -ship.getWidth())         // if off screen left
 			ship.setX((float)GAME_WIDTH);           // position off screen right
+		DebugOut("[GET X] = %.2f\n", ship.getX());
 	}
 	if (input->isKeyDown(SHIP_UP_KEY))               // if move up
 	{

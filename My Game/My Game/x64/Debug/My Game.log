@@ -1,0 +1,22 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\VC\VCTargets\Microsoft.Cpp.Platform.targets(67,5): error MSB8020: The build tools for v142 (Platform Toolset = 'v142') cannot be found. To build using the v142 build tools, please install v142 build tools.  Alternatively, you may upgrade to the current Visual Studio tools by selecting the Project menu or right-click the solution, and then selecting "Retarget solution".
+
+Project Performance Summary:
+      107 ms  C:\Users\KHANG NGUYEN\Documents\GitHub\My-Game\My Game\My Game\My Game.vcxproj   1 calls
+                107 ms  Build                                      1 calls
+
+Target Performance Summary:
+        0 ms  _PrepareForReferenceResolution             1 calls
+        0 ms  BeforeResolveReferences                    1 calls
+        0 ms  _SplitProjectReferencesByFileExistence     1 calls
+        0 ms  PrepareProjectReferences                   1 calls
+        0 ms  GetFrameworkPaths                          1 calls
+        1 ms  AssignProjectConfiguration                 1 calls
+        1 ms  SetBuildDefaultEnvironmentVariables        1 calls
+        1 ms  GetResolvedWinMD                           1 calls
+        1 ms  GetReferenceAssemblyPaths                  1 calls
+        2 ms  _PrepareForBuild                           1 calls
+        2 ms  _GetProjectReferenceTargetFrameworkProperties   1 calls
+       12 ms  SetTelemetryEnvironmentVariables           1 calls
+       14 ms  PlatformPrepareForBuild                    1 calls
+       19 ms  _CheckForInvalidConfigurationAndPlatform   1 calls
+       42 ms  ResolveProjectReferences                   1 calls

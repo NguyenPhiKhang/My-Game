@@ -89,6 +89,9 @@ public:
 
 	// Return colorFilter.
 	virtual COLOR_ARGB getColorFilter() { return colorFilter; }
+	
+	// Return direction
+	virtual int		getDirection() { return spriteData.direction; }
 
 	////////////////////////////////////////
 	//           Set functions            //
@@ -143,6 +146,9 @@ public:
 	{
 		textureManager = textureM;
 	}
+
+	// Set direction
+	virtual void setDirection(int _direction) { spriteData.direction = _direction; }
 
 	////////////////////////////////////////
 	//         Other functions            //

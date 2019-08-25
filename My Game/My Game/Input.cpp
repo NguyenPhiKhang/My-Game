@@ -50,7 +50,7 @@ void Input::keyDown(WPARAM wParam)
 		keysDown[wParam] = true;    // update keysDown array
 		// key has been "pressed", erased by clear()
 		keysPressed[wParam] = true; // update keysPressed array
-		DebugOut("[INFO] KeyDown: %d", wParam);
+		DebugOut("[INFO] KeyDown: %d\n", wParam);
 	}
 }
 
@@ -64,7 +64,7 @@ void Input::keyUp(WPARAM wParam)
 	if (wParam < inputNS::KEYS_ARRAY_LEN)
 		// update state table
 		keysDown[wParam] = false;
-	DebugOut("[INFO] KeyUp: %d", wParam);
+	DebugOut("[INFO] KeyUp: %d\n", wParam);
 }
 
 //=============================================================================

@@ -29,6 +29,7 @@ Game::~Game()
 //=============================================================================
 LRESULT Game::messageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	DebugOut("[INFOR---------------] In WndProc\n");
 	if (initialized)     // do not process messages if not initialized
 	{
 		switch (msg)
@@ -67,7 +68,7 @@ void Game::initialize(HWND hw)
 	graphics->initialize(hwnd, GAME_WIDTH, GAME_HEIGHT, FULLSCREEN);
 
 	// initialize input, do not capture mouse
-	//input->initialize(hwnd, false);             // throws GameError
+	input->initialize(hwnd);             // throws GameError
 
 	// attempt to set up high resolution timer
 	if (QueryPerformanceFrequency(&timerFreq) == false)
