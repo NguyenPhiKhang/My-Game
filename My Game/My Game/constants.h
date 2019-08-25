@@ -57,6 +57,10 @@ const float MAX_FRAME_TIME = 1.0f / MIN_FRAME_RATE; // maximum time used in calc
 const UCHAR ESC_KEY = VK_ESCAPE;   // escape key
 const UCHAR ALT_KEY = VK_MENU;     // Alt key
 const UCHAR ENTER_KEY = VK_RETURN;   // Enter key
+const UCHAR SHIP_RIGHT_KEY = VK_RIGHT; // Right arrow
+const UCHAR SHIP_LEFT_KEY = VK_LEFT; // Left arrow
+const UCHAR SHIP_UP_KEY = VK_UP; // Up arrow
+const UCHAR SHIP_DOWN_KEY = VK_DOWN; // Down arrow
 
 #endif
 

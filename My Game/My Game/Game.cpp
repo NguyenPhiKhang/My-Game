@@ -8,7 +8,7 @@
 //=============================================================================
 Game::Game()
 {
-	//input = new Input();        // initialize keyboard input immediately
+	input = new Input();        // initialize keyboard input immediately
 	// additional initialization is handled in later call to input->initialize()
 	paused = false;             // game is not paused
 	graphics = NULL;
@@ -36,52 +36,18 @@ LRESULT Game::messageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_DESTROY:
 			PostQuitMessage(0);					  //tell Windows to kill this program
 			return 0;
-		//case WM_KEYDOWN: case WM_SYSKEYDOWN:    // key down
-		//	input->keyDown(wParam);
-		//	return 0;
-		//case WM_KEYUP: case WM_SYSKEYUP:        // key up 
-		//	input->keyUp(wParam);
-		//	return 0;
-		//case WM_CHAR:                           // character entered
-		//	input->keyIn(wParam);
-		//	return 0;
-		//case WM_MOUSEMOVE:                      // mouse moved
-		//	input->mouseIn(lParam);
-		//	return 0;
-		//case WM_INPUT:                          // raw mouse data in
-		//	input->mouseRawIn(lParam);
-		//	return 0;
-		//case WM_LBUTTONDOWN:                    // left mouse button down
-		//	input->setMouseLButton(true);
-		//	input->mouseIn(lParam);				  // mouse position
-		//	return 0;
-		//case WM_LBUTTONUP:                      // left mouse button up
-		//	input->setMouseLButton(false);
-		//	input->mouseIn(lParam);               // mouse position
-		//	return 0;
-		//case WM_MBUTTONDOWN:                    // middle mouse button down
-		//	input->setMouseMButton(true);
-		//	input->mouseIn(lParam);               // mouse position
-		//	return 0;
-		//case WM_MBUTTONUP:                      // middle mouse button up
-		//	input->setMouseMButton(false);
-		//	input->mouseIn(lParam);               // mouse position
-		//	return 0;
-		//case WM_RBUTTONDOWN:                    // right mouse button down
-		//	input->setMouseRButton(true);
-		//	input->mouseIn(lParam);               // mouse position
-		//	return 0;
-		//case WM_RBUTTONUP:                      // right mouse button up
-		//	input->setMouseRButton(false);
-		//	input->mouseIn(lParam);               // mouse position
-		//	return 0;
-		//case WM_XBUTTONDOWN: case WM_XBUTTONUP: // mouse X button down/up
-		//	input->setMouseXButton(wParam);
-		//	input->mouseIn(lParam);               // mouse position
-		//	return 0;
-		//case WM_DEVICECHANGE:                   // check for controller insert
-		//	input->checkControllers();
-		//	return 0;
+		case WM_KEYDOWN: case WM_SYSKEYDOWN:    // key down
+			input->keyDown(wParam);
+			return 0;
+		case WM_KEYUP: case WM_SYSKEYUP:        // key up 
+			input->keyUp(wParam);
+			return 0;
+		case WM_CHAR:                           // character entered
+			input->keyIn(wParam);
+			return 0;
+		case WM_DEVICECHANGE:                   // check for controller insert
+			input->checkControllers();
+			return 0;
 		}
 	}
 	return DefWindowProc(hwnd, msg, wParam, lParam);    // let Windows handle it
@@ -179,7 +145,7 @@ void Game::setDisplayMode(graphicsNS::DISPLAY_MODE mode)
 //=============================================================================
 void Game::run(HWND hwnd)
 {
-	char s[50];
+	//char s[50];
 	if (graphics == NULL)            // if graphics not initialized
 		return;
 
@@ -221,22 +187,22 @@ void Game::run(HWND hwnd)
 		update(frameTime);                   // update all game items
 		ai();                       // artificial intelligence
 		collisions();               // handle collisions
-		//input->vibrateControllers(frameTime); // handle controller vibration
+		input->vibrateControllers(frameTime); // handle controller vibration
 	}
 	renderGame();                   // draw all game items
-	//input->readControllers();       // read state of controllers
+	input->readControllers();       // read state of controllers
 
 	// if Alt+Enter toggle fullscreen/window
-	//if (input->isKeyDown(ALT_KEY) && input->wasKeyPressed(ENTER_KEY))
-	//	setDisplayMode(graphicsNS::TOGGLE); // toggle fullscreen/window
+	if (input->isKeyDown(ALT_KEY) && input->wasKeyPressed(ENTER_KEY))
+		setDisplayMode(graphicsNS::TOGGLE); // toggle fullscreen/window
 
 	// if Esc key, set window mode
-	//if (input->isKeyDown(ESC_KEY))
-	//	setDisplayMode(graphicsNS::WINDOW); // set window mode
+	if (input->isKeyDown(ESC_KEY))
+		setDisplayMode(graphicsNS::WINDOW); // set window mode
 
 	// Clear input
 	// Call this after all key checks are done
-	//input->clear(inputNS::KEYS_PRESSED);
+	input->clear(inputNS::KEYS_PRESSED);
 }
 
 //=============================================================================
@@ -259,6 +225,6 @@ void Game::deleteAll()
 {
 	releaseAll();               // call onLostDevice() for every graphics item
 	SAFE_DELETE(graphics);
-	//SAFE_DELETE(input);
+	SAFE_DELETE(input);
 	initialized = false;
 }

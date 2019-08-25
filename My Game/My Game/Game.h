@@ -5,17 +5,16 @@
 #include <windows.h>
 #include <Mmsystem.h>
 #include "graphics.h"
-//#include "input.h"
+#include "input.h"
 #include "constants.h"
 #include <string.h>
-//#include "gameError.h"
 
 class Game
 {
 protected:
 	// common game properties
 	Graphics* graphics;         // pointer to Graphics
-	//Input* input;             // pointer to Input
+	Input* input;             // pointer to Input
 	HWND    hwnd;               // window handle
 	HRESULT hr;                 // standard return type
 	LARGE_INTEGER timeStart;    // Performance Counter start value
@@ -74,7 +73,7 @@ public:
 	Graphics* getGraphics() { return graphics; }
 
 	// Return pointer to Input.
-	//Input* getInput() { return input; }
+	Input* getInput() { return input; }
 
 	// Exit the game
 	void exitGame() { PostMessage(hwnd, WM_DESTROY, 0, 0); }

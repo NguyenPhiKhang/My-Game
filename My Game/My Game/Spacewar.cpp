@@ -64,15 +64,32 @@ void Spacewar::initialize(HWND hwnd)
 //=============================================================================
 void Spacewar::update(float frametime)
 {
-	ship.update(frametime);
-	ship.setDegrees(ship.getDegrees() + frameTime * ROTATION_RATE);
-	ship.setScale(ship.getScale() - frameTime * SCALE_RATE);
-	ship.setX(ship.getX() + frameTime * SHIP_SPEED);
-	if (ship.getX() > GAME_WIDTH)
+	if (input->isKeyDown(SHIP_RIGHT_KEY))            // if move right
 	{
-		ship.setX(ship.getX() - GAME_WIDTH);
-		ship.setScale(SHIP_SCALE);
+		ship.setX(ship.getX() + frameTime * SHIP_SPEED);
+		if (ship.getX() > GAME_WIDTH)               // if off screen right
+			ship.setX((float)-ship.getWidth());     // position off screen left
 	}
+	if (input->isKeyDown(SHIP_LEFT_KEY))             // if move left
+	{
+		ship.setX(ship.getX() - frameTime * SHIP_SPEED);
+		if (ship.getX() < -ship.getWidth())         // if off screen left
+			ship.setX((float)GAME_WIDTH);           // position off screen right
+	}
+	if (input->isKeyDown(SHIP_UP_KEY))               // if move up
+	{
+		ship.setY(ship.getY() - frameTime * SHIP_SPEED);
+		if (ship.getY() < -ship.getHeight())        // if off screen top
+			ship.setY((float)GAME_HEIGHT);          // position off screen bottom
+	}
+	if (input->isKeyDown(SHIP_DOWN_KEY))             // if move down
+	{
+		ship.setY(ship.getY() + frameTime * SHIP_SPEED);
+		if (ship.getY() > GAME_HEIGHT)              // if off screen bottom
+			ship.setY((float)-ship.getHeight());    // position off screen top
+	}
+
+	ship.update(frameTime);
 }
 
 //=============================================================================
@@ -109,6 +126,7 @@ void Spacewar::releaseAll()
 {
 	planetTexture.onLostDevice();
 	nebulaTexture.onLostDevice();
+	shipTexture.onLostDevice();
 
 	Game::releaseAll();
 	return;
@@ -122,6 +140,7 @@ void Spacewar::resetAll()
 {
 	nebulaTexture.onResetDevice();
 	planetTexture.onResetDevice();
+	shipTexture.onResetDevice();
 
 	Game::resetAll();
 	return;
