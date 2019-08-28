@@ -29,7 +29,6 @@ Game::~Game()
 //=============================================================================
 LRESULT Game::messageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	DebugOut("[INFOR---------------] In WndProc\n");
 	if (initialized)     // do not process messages if not initialized
 	{
 		switch (msg)

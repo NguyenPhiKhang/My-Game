@@ -19,7 +19,7 @@ Spacewar::~Spacewar()
 // Throws GameError on error
 //=============================================================================
 void Spacewar::initialize(HWND hwnd)
-{
+{ 
 	Game::initialize(hwnd); // throws GameError
 
 	// nebula texture

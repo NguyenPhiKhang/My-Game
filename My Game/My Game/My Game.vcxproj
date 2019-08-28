@@ -132,10 +132,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="debug.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Spacewar.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="WinMain.cpp" />
@@ -143,10 +146,13 @@
   <ItemGroup>
     <ClInclude Include="constants.h" />
     <ClInclude Include="debug.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Planet.h" />
+    <ClInclude Include="Ship.h" />
     <ClInclude Include="Spacewar.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>
