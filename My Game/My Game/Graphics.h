@@ -141,6 +141,18 @@ public:
 	// Post: All user surfaces are recreated.
 	void    changeDisplayMode(graphicsNS::DISPLAY_MODE mode = graphicsNS::TOGGLE);
 
+	// Return lenght of vector v.
+	static float  Vector2Lenght(const D3DXVECTOR2* v) { return D3DXVec2Length(v); }
+
+	// Return Dot product of vectors v1 and v2.
+	static float  Vector2Dot(const D3DXVECTOR2* v1, const D3DXVECTOR2* v2) { return D3DXVec2Dot(v1, v2); }
+
+	// Normalize vector v.
+	static void   Vector2Normallize(D3DXVECTOR2* v) { D3DXVec2Normalize(v, v); }
+
+	// Transform vector v with matrix m.
+	static D3DXVECTOR2* Vector2Transform(D3DXVECTOR2* v, D3DXMATRIX* m) { return D3DXVec2TransformCoord(v, v, m); }
+
 	// get functions
 	// Return direct3d.
 	LPDIRECT3D9   getD3D() { return d3d; }

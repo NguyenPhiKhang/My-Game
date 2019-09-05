@@ -39,22 +39,23 @@ void Spacewar::initialize(HWND hwnd)
 		DebugOut("Error initializing nebula");
 
 	// planet
-	if (!planet.initialize(graphics, 0, 0, 0, &planetTexture))
+	if (!planet.initialize(this, 0, 0, 0, &planetTexture))
 		DebugOut("Error initializing planet");
 	// place planet in center of screen
 	planet.setX(GAME_WIDTH * 0.5f - planet.getWidth() * 0.5f);
 	planet.setY(GAME_HEIGHT * 0.5f - planet.getHeight() * 0.5f);
 
 	// ship
-	if (!ship.initialize(graphics, SHIP_WIDTH, SHIP_HEIGHT, SHIP_COLS, &shipTexture))
+	if (!ship.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &shipTexture))
 		DebugOut("Error initializing ship");
-	//ship.setX(GAME_WIDTH / 4);
-	ship.setY(GAME_HEIGHT / 4);
-	ship.setFrameDelay(SHIP_ANIMATION_DELAY);
-	ship.setFrames(SHIP_START_FRAME, SHIP_END_FRAME);
-	ship.setCurrentFrame(SHIP_START_FRAME);
-	ship.setDegrees(0.0f);
-	ship.setScale(SHIP_SCALE);
+	ship.setX(GAME_WIDTH / 4 - shipNS::WIDTH);
+	ship.setY(GAME_HEIGHT / 2 - shipNS::HEIGHT);
+	ship.setFrames(shipNS::SHIP_START_FRAME, shipNS::SHIP_END_FRAME);
+	ship.setCurrentFrame(shipNS::SHIP_START_FRAME);
+	ship.setVelocity(D3DXVECTOR2(shipNS::SPEED, -shipNS::SPEED));
+	//ship.setFrameDelay(SHIP_ANIMATION_DELAY);
+	/*ship.setDegrees(0.0f);
+	ship.setScale(SHIP_SCALE);*/
 
 	return;
 }

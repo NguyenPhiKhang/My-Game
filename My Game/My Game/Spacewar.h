@@ -5,6 +5,8 @@
 #include "game.h"
 #include "textureManager.h"
 #include "image.h"
+#include "Planet.h"
+#include "Ship.h"
 
 //=============================================================================
 // This class is the core of the game
@@ -16,9 +18,9 @@ private:
 	TextureManager nebulaTexture;   // nebula texture
 	TextureManager planetTexture;   // planet texture
 	TextureManager shipTexture;		// ship texture
-	Image   planet;                 // planet image
+	Planet   planet;                 // planet image
 	Image   nebula;                 // nebula image
-	Image ship;
+	Ship ship;
 
 public:
 	// Constructor
