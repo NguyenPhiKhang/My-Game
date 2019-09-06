@@ -179,7 +179,7 @@ bool Entity::collideRotatedBox(Entity& ent, D3DXVECTOR2& collisionVector)
 	if (projectionsOverlap(ent) && projectionsOverlap(*this))
 	{
 		// set collsion vector
-		collisionVector = *ent.getCenter - getCenter();
+		collisionVector = *ent.getCenter() - *getCenter();
 		return true;
 	}
 	return false;
