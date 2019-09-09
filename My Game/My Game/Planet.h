@@ -13,9 +13,10 @@ namespace planetNS
 	const int	X = GAME_WIDTH / 2 - WIDTH / 2;	// location on screen
 	const int	Y = GAME_HEIGHT / 2 - HEIGHT / 2;
 	const float MASS = 1.0e14f;					// mass
-	const int TEXTURE_COLS = 1;					// Texture has 1 column
-	const int START_FRAME = 0;					// starts at frame 0
-	const int END_FRAME = 0;					// no animation
+	const int TEXTURE_COLS = 2;					// Texture has 1 column
+	const int START_FRAME = 1;					// starts at frame 0
+	const int END_FRAME = 1;					// no animation
+	const float ROTATION_RATE = PI / 12;
 }
 
 class Planet : public Entity // inherits from entity class
@@ -23,6 +24,9 @@ class Planet : public Entity // inherits from entity class
 public :
 	// constructor
 	Planet();
+
+	// rotated planet
+	void update(float frameTime);
 };
 
 #endif

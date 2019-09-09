@@ -26,6 +26,7 @@
 const char NEBULA_IMAGE[] = "Resources\\orion.jpg";  // photo source NASA/courtesy of nasaimages.org 
 const char PLANET_IMAGE[] = "Resources\\planet.png"; // picture of planet
 const char SHIP_IMAGE[] = "Resources\\ship.png"; //picture of spaceship
+const char TEXTURE_IMAGE[] = "Resources\\textures.png";	// game texture
 
 // window
 const char CLASS_NAME[] = "My Game";
@@ -41,6 +42,8 @@ const float MIN_FRAME_RATE = 10.0f;             // the minimum frame rate
 const float MIN_FRAME_TIME = 1.0f / FRAME_RATE;   // minimum desired time for 1 frame
 const float MAX_FRAME_TIME = 1.0f / MIN_FRAME_RATE; // maximum time used in calculations
 const float GRAVITY = 6.67428e-11f;             // gravitational constant
+const float MASS_PLANET = 1.0e14f;
+const float MASS_SHIP = 5.0f;
 
 //Direction
 const int D_LEFT = 1;
@@ -58,6 +61,9 @@ const UCHAR SHIP_RIGHT_KEY = VK_RIGHT; // Right arrow
 const UCHAR SHIP_LEFT_KEY = VK_LEFT; // Left arrow
 const UCHAR SHIP_UP_KEY = VK_UP; // Up arrow
 const UCHAR SHIP_DOWN_KEY = VK_DOWN; // Down arrow
+
+// weapon types
+enum WEAPON{TORPEDO, SHIP, PLANET};
 
 #endif
 
