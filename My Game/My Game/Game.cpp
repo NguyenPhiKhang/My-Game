@@ -168,7 +168,7 @@ void Game::run(HWND hwnd)
 	calfps += frameTime;
 	if (calfps >= 1.0f)
 	{
-		sprintf_s(s, "count: %d || CalFPS: %.0f", count, calfps);
+		sprintf_s(s, "count: %d fr/s|| CalFPS: %.0f seconds", count, calfps);
 		SetWindowTextA(hwnd, s);
 		count = 0;
 		calfps -= 0.99f;
@@ -224,7 +224,7 @@ void Game::resetAll()
 void Game::deleteAll()
 {
 	releaseAll();               // call onLostDevice() for every graphics item
-	SAFE_DELETE(graphics);
-	SAFE_DELETE(input);
+	safeDelete(graphics);
+	safeDelete(input);
 	initialized = false;
 }

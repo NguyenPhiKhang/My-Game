@@ -17,10 +17,11 @@ Entity::Entity():Image()
 	deltaV.x = 0.0f;
 	deltaV.y = 0.0f;
 	active = true;			// the Entity is active
-	rotatedBoxReady = true;
+	rotatedBoxReady = false;
 	collisionType = entityNS::CIRCLE;
 	health = 100;
 	gravity = entityNS::GRAVITY;
+	pixelsColliding = 0;
 }
 
 //=============================================================================
@@ -90,6 +91,9 @@ bool Entity::collidesWith(Entity& ent, D3DXVECTOR2& collisionVector)
 	// if both entities are BOX collision
 	if (collisionType == entityNS::BOX && ent.getCollisionType() == entityNS::BOX)
 		return collideBox(ent, collisionVector);
+	// If either entity is using PIXEL_PERFECT collision
+	if (collisionType == entityNS::PIXEL_PERFECT || ent.getCollisionType() == entityNS::PIXEL_PERFECT)
+		return collidePixelPerfect(ent, collisionVector);
 	// All other combinations use separating axis test
 	// if neither entity uses CIRCLE collision
 	if (collisionType != entityNS::CIRCLE && ent.getCollisionType() != entityNS::CIRCLE)
@@ -136,14 +140,12 @@ bool Entity::collideCircle(Entity& ent, D3DXVECTOR2& collisionVector)
 	}
 	return false;	// no colliding
 }
+
 //=============================================================================
-// Rotated Box collision detection method
+// Axis aligned bounding box collision detection method
 // Called by collision()
 // Post: returns true if collision, false otherwise
 //       sets collisionVector if collision
-// Uses Separating Axis Test to detect collision. 
-// The separating axis test:
-//   Two boxes are not colliding if their projections onto a line do not overlap.
 //=============================================================================
 bool Entity::collideBox(Entity& ent, D3DXVECTOR2& collisionVector)
 {
@@ -163,6 +165,7 @@ bool Entity::collideBox(Entity& ent, D3DXVECTOR2& collisionVector)
 	}
 	return false;
 }
+
 //=============================================================================
 // Rotated Box collision detection method
 // Called by collision()
@@ -171,15 +174,58 @@ bool Entity::collideBox(Entity& ent, D3DXVECTOR2& collisionVector)
 // Uses Separating Axis Test to detect collision. 
 // The separating axis test:
 //   Two boxes are not colliding if their projections onto a line do not overlap.
+// The current entity is A the other entity is B
 //=============================================================================
-bool Entity::collideRotatedBox(Entity& ent, D3DXVECTOR2& collisionVector)
+bool Entity::collideRotatedBox(Entity& entB, D3DXVECTOR2& collisionVector)
 {
+	float overlap01, overlap03;
 	computeRotatedBox();		// prepare rotated box
-	ent.computeRotatedBox();	// prepare rotated box
-	if (projectionsOverlap(ent) && projectionsOverlap(*this))
+	entB.computeRotatedBox();	// prepare rotated box
+	if (projectionsOverlap(entB, collisionVector) && projectionsOverlap(*this, collisionVector))
 	{
-		// set collsion vector
-		collisionVector = *ent.getCenter() - *getCenter();
+		// If we get to here the entities are colliding. The edge with the
+		// smallest overlapping section is the edge where the collision is
+		// occuring. The collision vector is created perpendicular to the
+		// collision edge. The projection edges are 01 and 03.
+		//
+		//                    entA01min
+		//                   /     entB01min
+		//                  /     / entA01max 
+		//                 /     / /  entB01max
+		//                /     / /  /
+		//            0--------------------1
+		// entB03min..|          ____  
+		// entA03min..|    _____|_ B | 
+		//            |   | A   | |  |
+		// entA03max..|   |_____|_|  |
+		// entB03max..|         |____|
+		//            | 
+		//            |   
+		//            3
+		//            
+		
+		if (entA01min < entB01min) // if A left of B
+		{
+			overlap01 = entA01max - entB01min;
+			collisionVector = corners[1] - corners[0];
+		}
+		else // else,  A right of B
+		{
+			overlap01 = entB01max - entA01min;
+			collisionVector = corners[0] - corners[1];
+		}
+		if (entA03min < entB03min) // if A above B
+		{
+			overlap03 = entA03max - entB03min;
+			if (overlap03 < overlap01)
+				collisionVector = corners[3] - corners[0];
+		}
+		else // else, A below B
+		{
+			overlap03 = entB03max - entA03min;
+			if (overlap03 < overlap01)
+				collisionVector = corners[0] - corners[3];
+		}
 		return true;
 	}
 	return false;
@@ -188,44 +234,45 @@ bool Entity::collideRotatedBox(Entity& ent, D3DXVECTOR2& collisionVector)
 //=============================================================================
 // Projects other box onto this edge01 and edge03.
 // Called by collideRotatedBox()
+// The current entity is A the other entity is B
 // Post: returns true if projections overlap, false otherwise
 //=============================================================================
-bool Entity::projectionsOverlap(Entity& ent)
+bool Entity::projectionsOverlap(Entity& entB, D3DXVECTOR2& collisionVector)
 {
-	float projection, min01, max01, min03, max03;
+	float projection;
 
 	//project other box onto edge01
-	projection = graphics->Vector2Dot(&edge01, ent.getCorner(0)); // project corner 0
-	min01 = projection;
-	max01 = projection;
+	projection = graphics->Vector2Dot(&edge01, entB.getCorner(0)); // project corner 0
+	entB01min = projection;
+	entB01max = projection;
 	// for each remaining corner
 	for (int c = 1; c < 4; c++)
 	{
 		// project corner onto edge01
-		projection = graphics->Vector2Dot(&edge01, ent.getCorner(c));
-		if (projection < min01)
-			min01 = projection;
-		else if (projection > max01)
-			max01 = projection;
+		projection = graphics->Vector2Dot(&edge01, entB.getCorner(c));
+		if (projection < entB01min)
+			entB01min = projection;
+		else if (projection > entB01max)
+			entB01max = projection;
 	}
-	if (min01 > edge01Max || max01 < edge01Min) //if projections do not overlap
+	if (entB01min > entA01max || entB01max < entA01min) //if projections do not overlap
 		return false;							// no collision is possible
 
 	// project other box onto edge03
-	projection = graphics->Vector2Dot(&edge03, ent.getCorner(0)); // project corner 0
-	min03 = projection;
-	max03 = projection;
+	projection = graphics->Vector2Dot(&edge03, entB.getCorner(0)); // project corner 0
+	entB03min = projection;
+	entB03max = projection;
 	// for each remaining corner
 	for (int c = 1; c < 4; c++)
 	{
 		// project corner onto edge03
-		projection = graphics->Vector2Dot(&edge03, ent.getCorner(c));
-		if (projection < min03)
-			min03 = projection;
-		else if (projection > max03)
-			max03 = projection;
+		projection = graphics->Vector2Dot(&edge03, entB.getCorner(c));
+		if (projection < entB03min)
+			entB03min = projection;
+		else if (projection > entB03max)
+			entB03max = projection;
 	}
-	if (min03 > edge03Max || max03 < edge03Min) // if projections do not overlap
+	if (entB03min > entA03max || entB03max < entA03min) // if projections do not overlap
 		return false;                       // no collision is possible
 
 	return true;                            // projections overlap
@@ -250,40 +297,80 @@ bool Entity::projectionsOverlap(Entity& ent)
 // Post: returns true if collision, false otherwise
 //       sets collisionVector if collision
 //=============================================================================
-bool Entity::collideRotatedBoxCircle(Entity& ent, D3DXVECTOR2& collisionVector)
+bool Entity::collideRotatedBoxCircle(Entity& entB, D3DXVECTOR2& collisionVector)
 {
-	float min01, min03, max01, max03, center01, center03;
+	float center01, center03, overlap01, overlap03;
 
 	computeRotatedBox();                    // prepare rotated box
 
 	// project circle center onto edge01
-	center01 = graphics->Vector2Dot(&edge01, ent.getCenter());
-	min01 = center01 - ent.getRadius() * ent.getScale(); // min and max are Radius from center
-	max01 = center01 + ent.getRadius() * ent.getScale();
-	if (min01 > edge01Max || max01 < edge01Min) // if projections do not overlap
+	center01 = graphics->Vector2Dot(&edge01, entB.getCenter());
+	entB01min = center01 - entB.getRadius() * entB.getScale(); // min and max are Radius from center
+	entB01max = center01 + entB.getRadius() * entB.getScale();
+	if (entB01min > entA01max || entB01max < entA01min) // if projections do not overlap
 		return false;                       // no collision is possible
 
 	// project circle center onto edge03
-	center03 = graphics->Vector2Dot(&edge03, ent.getCenter());
-	min03 = center03 - ent.getRadius() * ent.getScale(); // min and max are Radius from center
-	max03 = center03 + ent.getRadius() * ent.getScale();
-	if (min03 > edge03Max || max03 < edge03Min) // if projections do not overlap
+	center03 = graphics->Vector2Dot(&edge03, entB.getCenter());
+	entB03min = center03 - entB.getRadius() * entB.getScale(); // min and max are Radius from center
+	entB03max = center03 + entB.getRadius() * entB.getScale();
+	if (entB03min > entA03max || entB03max < entA03min) // if projections do not overlap
 		return false;                       // no collision is possible
 
 	// circle projection overlaps box projection
 	// check to see if circle is in voronoi region of collision box
-	if (center01 < edge01Min && center03 < edge03Min)    // if circle in Voronoi0
-		return collideCornerCircle(corners[0], ent, collisionVector);
-	if (center01 > edge01Max && center03 < edge03Min)    // if circle in Voronoi1
-		return collideCornerCircle(corners[1], ent, collisionVector);
-	if (center01 > edge01Max && center03 > edge03Max)    // if circle in Voronoi2
-		return collideCornerCircle(corners[2], ent, collisionVector);
-	if (center01 < edge01Min && center03 > edge03Max)    // if circle in Voronoi3
-		return collideCornerCircle(corners[3], ent, collisionVector);
+	if (center01 < entA01min && center03 < entA03min)    // if circle in Voronoi0
+		return collideCornerCircle(corners[0], entB, collisionVector);
+	if (center01 > entA01max && center03 < entA03min)    // if circle in Voronoi1
+		return collideCornerCircle(corners[1], entB, collisionVector);
+	if (center01 > entA01max && center03 > entA03max)    // if circle in Voronoi2
+		return collideCornerCircle(corners[2], entB, collisionVector);
+	if (center01 < entA01min && center03 > entA03max)    // if circle in Voronoi3
+		return collideCornerCircle(corners[3], entB, collisionVector);
 
-	// circle not in voronoi region so it is colliding with edge of box
-	// set collision vector, uses simple center of circle to center of box
-	collisionVector = *ent.getCenter() - *getCenter();
+	// Circle not in voronoi region so it is colliding with edge of box.
+	// The edge with the smallest overlapping section is the edge where the
+	// collision is occuring. The collision vector is created perpendicular
+	// to the collision edge. The projection edges are 01 and 03.
+	//
+	//                    entA01min
+	//                   /   entB01min
+	//                  /   /    entB01max 
+	//                 /   /    /  entA01max
+	//                /   /    /  /
+	//            0--------------------1
+	// entB03min..|        ___  
+	// entA03min..|    ___/ B \__  
+	// entB03max..|   |   \___/  |
+	//            |   | A        |
+	// entA03max..|   |__________|
+	//            |         
+	//            | 
+	//            |   
+	//            3
+	//            
+	if (entA01min < entB01min)   // if A left of B
+	{
+		overlap01 = entA01max - entB01min;
+		collisionVector = corners[1] - corners[0];
+	}
+	else    // else, A right of B
+	{
+		overlap01 = entB01max - entA01min;
+		collisionVector = corners[0] - corners[1];
+	}
+	if (entA03min < entB03min)   // if A above B
+	{
+		overlap03 = entA03max - entB03min;
+		if (overlap03 < overlap01)
+			collisionVector = corners[3] - corners[0];
+	}
+	else    // else, A below B
+	{
+		overlap03 = entB03max - entA03min;
+		if (overlap03 < overlap01)
+			collisionVector = corners[0] - corners[3];
+	}
 	return true;
 }
 
@@ -337,28 +424,28 @@ void Entity::computeRotatedBox()
 	// corners[0] is used as origin
 	// The two edges connected to corners[0] are used as the projection lines
 	edge01 = D3DXVECTOR2(corners[1].x - corners[0].x, corners[1].y - corners[0].y);
-	graphics->Vector2Normallize(&edge01);
+	graphics->Vector2Normalize(&edge01);
 	edge03 = D3DXVECTOR2(corners[3].x - corners[0].x, corners[3].y - corners[0].y);
-	graphics->Vector2Normallize(&edge03);
+	graphics->Vector2Normalize(&edge03);
 
 	// this entities min and max projection onto edges
 	projection = graphics->Vector2Dot(&edge01, &corners[0]);
-	edge01Min = edge01Max = projection;
+	entA01min = entA01max = projection;
 	// project onto edge01
 	projection = graphics->Vector2Dot(&edge01, &corners[1]);
-	if (projection < edge01Min)
-		edge01Min = projection;
-	else if (projection > edge01Max)
-		edge01Max = projection;
+	if (projection < entA01min)
+		entA01min = projection;
+	else if (projection > entA01max)
+		entA01max = projection;
 
 	// project onto edge03
 	projection = graphics->Vector2Dot(&edge03, &corners[0]);
-	edge03Min = edge03Max = projection;
+	entA03min = entA03max = projection;
 	projection = graphics->Vector2Dot(&edge03, &corners[3]);
-	if (projection < edge03Min)
-		edge03Min = projection;
-	else if (projection > edge03Max)
-		edge03Max = projection;
+	if (projection < entA03min)
+		entA03min = projection;
+	else if (projection > entA03max)
+		entA03max = projection;
 
 	rotatedBoxReady = true;
 }
@@ -391,24 +478,28 @@ void Entity::damage(int weapon)
 void Entity::bounce(D3DXVECTOR2& collisionVector, Entity &ent)
 {
 	D3DXVECTOR2 Vdiff = ent.getVelocity() - velocity;
-	D3DXVECTOR2 cUV = collisionVector;					// collision Unit Vector
-	Graphics::Vector2Normallize(&cUV);
-
+	D3DXVECTOR2 cUV = collisionVector;              // collision unit vector
+	Graphics::Vector2Normalize(&cUV);
 	float cUVdotVdiff = Graphics::Vector2Dot(&cUV, &Vdiff);
 	float massRatio = 2.0f;
 	if (getMass() != 0)
 		massRatio *= (ent.getMass() / (getMass() + ent.getMass()));
+	if (massRatio < 0.1f)
+		massRatio = 0.1f;
 
-	// If entities are already moving apart then bounce must
-	// have been previously called and they are still colliding.
-	// Move entities apart along collisionVector
-	if (cUVdotVdiff > 0)
+	// Move entities out of collision along collision vector
+	D3DXVECTOR2 cv;
+	int count = 10;   // loop limit
+	do
 	{
-		setX(getX() - cUV.x * massRatio);
-		setY(getY() - cUV.y * massRatio);
-	}
-	else
-		deltaV += ((massRatio * cUVdotVdiff) * cUV);
+		setX(getX() - cUV.x);
+		setY(getY() - cUV.y);
+		rotatedBoxReady = false;
+		count--;
+	} while (this->collidesWith(ent, cv) && count);
+
+	// bounce
+	deltaV += ((massRatio * cUVdotVdiff) * cUV);
 }
 
 //=============================================================================
@@ -433,9 +524,37 @@ void Entity::gravityForce(Entity* ent, float frameTime)
 	D3DXVECTOR2 gravityV(ent->getCenterX() - getCenterX(),
 		ent->getCenterY() - getCenterY());
 	// Normalize the vector
-	Graphics::Vector2Normallize(&gravityV);
+	Graphics::Vector2Normalize(&gravityV);
 	// Multipy by force of gravity to create gravity vector
 	gravityV *= force * frameTime;
 	// Add gravity vector to moving velocity vector to change direction
 	velocity += gravityV;
+}
+
+//=============================================================================
+// Pixel Perfect collision detection method
+// Called by collision()
+// If the graphics card does not support a stencil buffer then CIRCLE
+// collision is used.
+// Post: returns true if collision, false otherwise
+//       sets collisionVector if collision
+//=============================================================================
+bool Entity::collidePixelPerfect(Entity& ent, D3DXVECTOR2& collisionVector)
+{
+	if (graphics->getStencilSupport() == false)  // if stencil not supported
+		return (collideCircle(ent, collisionVector));   // use CIRCLE collision
+
+	// get fresh texture because they may have been released
+	ent.spriteData.texture = ent.textureManager->getTexture();
+	spriteData.texture = textureManager->getTexture();
+
+	// if pixels are colliding
+	pixelsColliding = graphics->pixelCollision(ent.getSpriteData(), this->getSpriteData());
+	if (pixelsColliding > 0)
+	{
+		// set collision vector to center of entity
+		collisionVector = *ent.getCenter() - *getCenter();
+		return true;
+	}
+	return false;
 }

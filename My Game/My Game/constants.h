@@ -7,17 +7,17 @@
 //-----------------------------------------------
 // Useful macros
 //-----------------------------------------------
-// Safely delete pointer referenced item
-#define SAFE_DELETE(ptr)       { if (ptr) { delete (ptr); (ptr)=NULL; } }
-// Safely release pointer referenced item
-#define SAFE_RELEASE(ptr)      { if(ptr) { (ptr)->Release(); (ptr)=NULL; } }
-// Safely delete pointer referenced array
-#define SAFE_DELETE_ARRAY(ptr) { if(ptr) { delete [](ptr); (ptr)=NULL; } }
-// Safely call onLostDevice
-#define SAFE_ON_LOST_DEVICE(ptr)    { if(ptr) { ptr->onLostDevice(); } }
-// Safely call onResetDevice
-#define SAFE_ON_RESET_DEVICE(ptr)   { if(ptr) { ptr->onResetDevice(); } }
-#define TRANSCOLOR  SETCOLOR_ARGB(0,255,0,255)  // transparent color (magenta)
+//// Safely delete pointer referenced item
+//#define SAFE_DELETE(ptr)       { if (ptr) { delete (ptr); (ptr)=NULL; } }
+//// Safely release pointer referenced item
+//#define SAFE_RELEASE(ptr)      { if(ptr) { (ptr)->Release(); (ptr)=NULL; } }
+//// Safely delete pointer referenced array
+//#define SAFE_DELETE_ARRAY(ptr) { if(ptr) { delete [](ptr); (ptr)=NULL; } }
+//// Safely call onLostDevice
+//#define SAFE_ON_LOST_DEVICE(ptr)    { if(ptr) { ptr->onLostDevice(); } }
+//// Safely call onResetDevice
+//#define SAFE_ON_RESET_DEVICE(ptr)   { if(ptr) { ptr->onResetDevice(); } }
+//#define TRANSCOLOR  SETCOLOR_ARGB(0,255,0,255)  // transparent color (magenta)
 
 //-----------------------------------------------
 //                  Constants
@@ -27,6 +27,9 @@ const char NEBULA_IMAGE[] = "Resources\\orion.jpg";  // photo source NASA/courte
 const char PLANET_IMAGE[] = "Resources\\planet.png"; // picture of planet
 const char SHIP_IMAGE[] = "Resources\\ship.png"; //picture of spaceship
 const char TEXTURE_IMAGE[] = "Resources\\textures.png";	// game texture
+const char BACKDROP_IMAGE[] = "pictures\\backdrop.png";
+const char BALL_IMAGE[] = "pictures\\ball.png";
+const char PADDLE_IMAGE[] = "pictures\\paddle.png";
 
 // window
 const char CLASS_NAME[] = "My Game";
@@ -41,15 +44,31 @@ const float FRAME_RATE = 60.0f;               // the target frame rate (frames/s
 const float MIN_FRAME_RATE = 10.0f;             // the minimum frame rate
 const float MIN_FRAME_TIME = 1.0f / FRAME_RATE;   // minimum desired time for 1 frame
 const float MAX_FRAME_TIME = 1.0f / MIN_FRAME_RATE; // maximum time used in calculations
-const float GRAVITY = 6.67428e-11f;             // gravitational constant
+//const float GRAVITY = 6.67428e-11f;             // gravitational constant
 const float MASS_PLANET = 1.0e14f;
 const float MASS_SHIP = 5.0f;
+const bool VSYNC = true;                    // true locks display to vertical sync rate
+const float GRAVITY = 500.0f;				// acceleration of gravity pixels/ sec
 
 //Direction
 const int D_LEFT = 1;
 const int D_RIGHT = 2;
 const int D_UP = 3;
 const int D_DOWN = 4;
+
+// audio files required by audio.cpp
+// WAVE_BANK must be location of .xwb file.
+const char WAVE_BANK[] = "audio\\Win\\WavesExample1.xwb";
+// SOUND_BANK must be location of .xsb file.
+const char SOUND_BANK[] = "audio\\Win\\SoundsExample1.xsb";
+
+// audio cues
+const char BEEP1[] = "beep1";
+const char BEEP2[] = "beep2";
+const char BEEP3[] = "beep3";
+const char BEEP4[] = "beep4";
+const char HIT[] = "hit";
+
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used
@@ -64,6 +83,66 @@ const UCHAR SHIP_DOWN_KEY = VK_DOWN; // Down arrow
 
 // weapon types
 enum WEAPON{TORPEDO, SHIP, PLANET};
+
+//=============================================================================
+// Function templates for safely dealing with pointer referenced items.
+// The functions defined by these templates may be called using a normal
+// function call syntax. The compiler will create a function that replaces T
+// with the type of the calling parameter.
+//=============================================================================
+// Safely release pointer referenced item
+template <typename T>
+inline void safeRelease(T& ptr)
+{
+	if (ptr)
+	{
+		ptr->Release();
+		ptr = NULL;
+	}
+}
+#define SAFE_RELEASE safeRelease            // for backward compatiblility
+
+// Safely delete pointer referenced item
+template <typename T>
+inline void safeDelete(T& ptr)
+{
+	if (ptr)
+	{
+		delete ptr;
+		ptr = NULL;
+	}
+}
+#define SAFE_DELETE safeDelete              // for backward compatiblility
+
+// Safely delete pointer referenced array
+template <typename T>
+inline void safeDeleteArray(T& ptr)
+{
+	if (ptr)
+	{
+		delete[] ptr;
+		ptr = NULL;
+	}
+}
+#define SAFE_DELETE_ARRAY safeDeleteArray   // for backward compatiblility
+
+// Safely call onLostDevice
+template <typename T>
+inline void safeOnLostDevice(T& ptr)
+{
+	if (ptr)
+		ptr->onLostDevice();
+}
+#define SAFE_ON_LOST_DEVICE safeOnLostDevice    // for backward compatiblility
+
+// Safely call onResetDevice
+template <typename T>
+inline void safeOnResetDevice(T& ptr)
+{
+	if (ptr)
+		ptr->onResetDevice();
+}
+#define SAFE_ON_RESET_DEVICE safeOnResetDevice  // for backward compatiblility
 
 #endif
 

@@ -44,9 +44,22 @@ namespace graphicsNS
 	const COLOR_ARGB ALPHA25 = D3DCOLOR_ARGB(64, 255, 255, 255);  // AND with color to get 25% alpha
 	const COLOR_ARGB ALPHA50 = D3DCOLOR_ARGB(128, 255, 255, 255);  // AND with color to get 50% alpha
 	const COLOR_ARGB BACK_COLOR = NAVY;                         // background color of game
+	const COLOR_ARGB TRANSCOLOR = MAGENTA;						// transparent color
 
 	enum DISPLAY_MODE { TOGGLE, FULLSCREEN, WINDOW };
 }
+
+struct VertexC				// Vertex with color
+{
+	float x, y, z;			// vertex location
+	float rhw;				// reciprocal homogeneous W ( set to 1)
+	unsigned long color;	// vertex color
+};
+
+// Flexible Vertex Format Codes
+// D3DFVF_XYZRHW = The verticies are transformed
+// D3DFVF_DIFFUSE = The verticies contain diffuse color data 
+#define D3DFVF_VERTEX (D3DFVF_XYZRHW | D3DFVF_DIFFUSE)
 
 // SpriteData: The properties required by Graphics::drawSprite to draw a sprite
 struct SpriteData
@@ -75,10 +88,14 @@ private:
 	D3DPRESENT_PARAMETERS d3dpp;
 	D3DDISPLAYMODE pMode;
 
+	IDirect3DQuery9* pOcclusionQuery;	// for pixel perfect collision detection
+	DWORD   numberOfPixelsColliding;    // for pixel perfect collision detection
+
 	// other variables
 	HRESULT     result;         // standard Windows return codes
 	HWND        hwnd;
 	bool        fullscreen;
+	bool        stencilSupport; // true if device supports stencil buffer
 	int         width;
 	int         height;
 	COLOR_ARGB  backColor;      // background color
@@ -105,6 +122,18 @@ public:
 	//      fullscreen = true for full screen, false for window
 	void    initialize(HWND hw, int width, int height, bool fullscreen);
 
+	// Create a vertex buffer.
+	// Pre: verts[] contains vertex data.
+	//      size = size of verts[]
+	// Post: &vertexBuffer points to buffer if successful.
+	HRESULT createVertexBuffer(VertexC verts[], UINT size, LPDIRECT3DVERTEXBUFFER9& vertexBuffer);
+
+	// Display a quad (rectangle) with alpha transparency.
+	// Pre: createVertexBuffer was used to create vertexBuffer containing four
+	//      vertices defining the quad in clockwise order.
+	//      g3ddev->BeginScene was called
+	bool    drawQuad(LPDIRECT3DVERTEXBUFFER9 vertexBuffer);
+
 	// Load the texture into default D3D memory (normal texture use)
 	// For internal engine use only. Use the TextureManager class to load game textures.
 	// Pre: filename = name of texture file.
@@ -112,6 +141,14 @@ public:
 	// Post: width and height = size of texture
 	//       texture points to texture
 	HRESULT loadTexture(const char* filename, COLOR_ARGB transcolor, UINT& width, UINT& height, LPDIRECT3DTEXTURE9& texture);
+
+	// Load the texture into system memory (system memory is lockable)
+   // Provides direct access to pixel data. Use the TextureManager class to load textures for display.
+   // Pre: filename = name of texture file.
+   //      transcolor = transparent color
+   // Post: width and height = size of texture
+   //       texture points to texture
+	HRESULT loadTextureSystemMem(const char* filename, COLOR_ARGB transcolor, UINT& width, UINT& height, LPDIRECT3DTEXTURE9& texture);
 
 	// Display the offscreen backbuffer to the screen.
 	HRESULT showBackbuffer();
@@ -148,10 +185,19 @@ public:
 	static float  Vector2Dot(const D3DXVECTOR2* v1, const D3DXVECTOR2* v2) { return D3DXVec2Dot(v1, v2); }
 
 	// Normalize vector v.
-	static void   Vector2Normallize(D3DXVECTOR2* v) { D3DXVec2Normalize(v, v); }
+	static void   Vector2Normalize(D3DXVECTOR2* v) { D3DXVec2Normalize(v, v); }
 
 	// Transform vector v with matrix m.
 	static D3DXVECTOR2* Vector2Transform(D3DXVECTOR2* v, D3DXMATRIX* m) { return D3DXVec2TransformCoord(v, v, m); }
+
+	// Return the number of pixels colliding between the two sprites.
+	// Pre: The device supports a stencil buffer and pOcclusionQuery points to
+	// a valid occlusionQuery object.
+	// Post: Returns the number of pixels of overlap
+	// This function waits for the graphics card to render the last frame and return
+	// the collision query pixel count. To avoid slowing down your game, use a
+	// simple collison test first to eliminate entities that are not colliding.
+	DWORD pixelCollision(const SpriteData& sprite1, const SpriteData& sprite2);
 
 	// get functions
 	// Return direct3d.
@@ -172,6 +218,12 @@ public:
 	// Return fullscreen
 	bool    getFullscreen() { return fullscreen; }
 
+	// Return pOcclusionQuery
+	IDirect3DQuery9* getPOcclusionQuery() { return pOcclusionQuery; }
+
+	// Returns true if the graphics card supports a stencil buffer
+	bool getStencilSupport() { return stencilSupport; }
+
 	// Set color used to clear screen
 	void setBackColor(COLOR_ARGB c) { backColor = c; }
 
@@ -183,8 +235,8 @@ public:
 		result = E_FAIL;
 		if (d3d == NULL)
 			return result;
-		// clear backbuffer to backColor
-		d3ddev->Clear(0, NULL, D3DCLEAR_TARGET, backColor, 1.0F, 0);
+		// clear backbuffer to backColor, 
+		d3ddev->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_STENCIL | D3DCLEAR_ZBUFFER, backColor, 1.0F, 0);
 		result = d3ddev->BeginScene();          // begin scene for drawing
 		return result;
 	}

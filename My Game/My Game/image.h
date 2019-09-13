@@ -37,7 +37,8 @@ public:
 	////////////////////////////////////////
 
 	// Return reference to SpriteData structure.
-	const virtual SpriteData& getSpriteInfo() { return spriteData; }
+	const virtual SpriteData& getSpriteInfo() { return spriteData; }	// for backward compatibility
+	const virtual SpriteData& getSpriteData() { return spriteData; }
 
 	// Return visible parameter.
 	virtual bool  getVisible() { return visible; }
@@ -170,11 +171,20 @@ public:
 	virtual void flipVertical(bool flip) { spriteData.flipVertical = flip; }
 
 	// Draw Image using color as filter. Default color is WHITE.
-	virtual void draw(COLOR_ARGB color = graphicsNS::WHITE);
+	// textureN is number of texture in textureManager 
+	virtual void draw(COLOR_ARGB color, UINT textureN);
+
+	// Draw Image using color as filter. Default color is WHITE.
+	virtual void draw(COLOR_ARGB color = graphicsNS::WHITE) { draw(color, 0); }
+
+	// Draw Image using default color filter.
+	// textureN is number of texture in textureManager 
+	virtual void draw(UINT textureN) { draw(graphicsNS::WHITE, textureN); }
 
 	// Draw this image using the specified SpriteData.
 	//   The current SpriteData.rect is used to select the texture.
-	virtual void draw(SpriteData sd, COLOR_ARGB color = graphicsNS::WHITE); // draw with SpriteData using color as filter
+	 // textureN is number of texture in textureManager 
+	virtual void draw(SpriteData sd, COLOR_ARGB color = graphicsNS::WHITE, UINT textureN=0); // draw with SpriteData using color as filter
 
 	// Update the animation. frameTime is used to regulate the speed.
 	virtual void update(float frameTime);

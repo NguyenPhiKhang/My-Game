@@ -22,7 +22,7 @@ namespace shipNS
 	const float SHIP_ANIMATION_DELAY = 0.2f;	// time between frames
 	const int SHIELD_START_FRAME = 24;			// shield start frames
 	const int SHIELD_END_FRAME = 27;			// shield end frames
-	const float SHIELD_ANIMATION_DELAY = 0.1f;	// time between frames
+	const float SHIELD_ANIMATION_DELAY = 0.3f;	// time between frames
 }
 
 //inherits from Entity class

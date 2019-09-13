@@ -8,7 +8,7 @@
 
 namespace entityNS
 {
-	enum COLLISION_TYPE { NONE, CIRCLE, BOX, ROTATED_BOX };
+	enum COLLISION_TYPE { NONE, CIRCLE, BOX, ROTATED_BOX, PIXEL_PERFECT };
 	const float GRAVITY = 6.67428e-11f;         // gravitational constant
 }
 
@@ -26,7 +26,13 @@ protected:
 	RECT    edge;           // for BOX and ROTATED_BOX collision detection
 	D3DXVECTOR2 corners[4];     // for ROTATED_BOX collision detection
 	D3DXVECTOR2 edge01, edge03;  // edges used for projection
-	float   edge01Min, edge01Max, edge03Min, edge03Max; // min and max projections
+	//float   edge01Min, edge01Max, edge03Min, edge03Max; // min and max projections
+
+	//min and max projections for this entity
+	float entA01min, entA01max, entA03min, entA03max;
+	//min and max projections for other entity
+	float entB01min, entB01max, entB03min, entB03max;
+
 	D3DXVECTOR2 velocity;       // velocity
 	D3DXVECTOR2 deltaV;         // added to velocity during next call to update()
 	float   mass;           // Mass of entity
@@ -38,6 +44,7 @@ protected:
 	HRESULT hr;             // standard return type
 	bool    active;         // only active entities may collide
 	bool    rotatedBoxReady;    // true when rotated collision box is ready
+	DWORD pixelsColliding;		// number of pixels colliding in pixel perfect collision
 
 	// --- The following functions are protected because they are not intended to be
 	// --- called from outside the class.
@@ -59,8 +66,15 @@ protected:
 	virtual bool collideRotatedBoxCircle(Entity& ent, D3DXVECTOR2& collisionVector);
 	// Separating axis collision detection helper functions
 	void computeRotatedBox();
-	bool projectionsOverlap(Entity& ent);
+	bool projectionsOverlap(Entity& ent, D3DXVECTOR2& collisionVector);
 	bool collideCornerCircle(D3DXVECTOR2 corner, Entity& ent, D3DXVECTOR2& collisionVector);
+	// Pixel Perfect collision detection
+	// If the graphics card does not support a stencil buffer then CIRCLE
+	// collision is used.
+	// Pre: &ent = Other entity
+	// Post: &collisionVector contains collision vector
+	virtual bool collidePixelPerfect(Entity& ent, D3DXVECTOR2& collisionVector);
+
 
 public:
 	// Constructor
@@ -108,8 +122,11 @@ public:
 	// Return health;
 	virtual float getHealth()         const { return health; }
 
-	// Return collision type (NONE, CIRCLE, BOX, ROTATED_BOX)
+	// Return collision type (NONE, CIRCLE, BOX, ROTATED_BOX, PIXEL_PERFECT)
 	virtual entityNS::COLLISION_TYPE getCollisionType() { return collisionType; }
+
+	// Return number of pixels colliding in pixel perfect collision
+	virtual DWORD getPixelsColliding() const { return pixelsColliding; }
 
 	////////////////////////////////////////
 	//           Set functions            //
@@ -135,6 +152,18 @@ public:
 
 	// Set radius of collision circle.
 	virtual void setCollisionRadius(float r) { radius = r; }
+	
+	// Set collision type (NONE, CIRCLE, BOX, ROTATED_BOX, PIXEL_PERFECT)
+	virtual void setCollisionType(entityNS::COLLISION_TYPE ctype)
+	{
+		collisionType = ctype;
+	}
+
+	// Set RECT structure used for BOX and ROTATED_BOX collision detection.
+	virtual void setEdge(RECT e) { edge = e; }
+
+	// Set rotatedBoxReady. Set to false to force recalculation.
+	virtual void setRotatedBoxReady(bool r) { rotatedBoxReady = r; }
 
 	////////////////////////////////////////
 	//         Other functions            //

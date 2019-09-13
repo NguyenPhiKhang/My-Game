@@ -16,7 +16,7 @@ namespace planetNS
 	const int TEXTURE_COLS = 2;					// Texture has 1 column
 	const int START_FRAME = 1;					// starts at frame 0
 	const int END_FRAME = 1;					// no animation
-	const float ROTATION_RATE = PI / 12;
+	const float ROTATION_RATE = (float)PI / 12;
 }
 
 class Planet : public Entity // inherits from entity class
