@@ -30,6 +30,8 @@ const char TEXTURE_IMAGE[] = "Resources\\textures.png";	// game texture
 const char BACKDROP_IMAGE[] = "pictures\\backdrop.png";
 const char BALL_IMAGE[] = "pictures\\ball.png";
 const char PADDLE_IMAGE[] = "pictures\\paddle.png";
+const char FONT_IMAGE[] = "pictures\\CKfont.png";
+
 
 // window
 const char CLASS_NAME[] = "My Game";
@@ -63,7 +65,7 @@ const char WAVE_BANK[] = "audio\\Win\\WavesExample1.xwb";
 const char SOUND_BANK[] = "audio\\Win\\SoundsExample1.xsb";
 
 // audio cues
-const char BEEP1[] = "beep1";
+const char BEEP1[] = "./Audio/beep1.wave";
 const char BEEP2[] = "beep2";
 const char BEEP3[] = "beep3";
 const char BEEP4[] = "beep4";
