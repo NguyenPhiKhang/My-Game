@@ -7,6 +7,7 @@
 #include "image.h"
 #include "Planet.h"
 #include "Ship.h"
+#include "Square.h"
 
 //=============================================================================
 // This class is the core of the game
@@ -19,10 +20,13 @@ private:
 	//TextureManager planetTexture;   // planet texture
 	//TextureManager shipTexture;		// ship texture
 	TextureManager gameTexture;		// game texture
+	TextureManager squareTexture;
 	Planet   planet;                 // planet image
 	Image   nebula;                 // nebula image
 	Ship ship1;
 	Ship ship2;
+	Square square1;
+	Square square2;
 
 public:
 	// Constructor

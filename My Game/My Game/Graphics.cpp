@@ -362,7 +362,7 @@ void Graphics::drawSprite(const SpriteData& spriteData, COLOR_ARGB color)
 										   (float)(spriteData.height / 2 * spriteData.scale));
 	// Screen position of the sprite
 	D3DXVECTOR2 translate = D3DXVECTOR2((float)spriteData.x, (float)spriteData.y);
-	// Scaling X,Y
+	// Scaling X,Y	
 	D3DXVECTOR2 scaling(spriteData.scale, spriteData.scale);
 	if (spriteData.flipHorizontal)  // if flip horizontal
 	{

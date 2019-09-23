@@ -38,6 +38,9 @@ void Spacewar::initialize(HWND hwnd)
 	if (!gameTexture.initialize(graphics, TEXTURE_IMAGE))
 		DebugOut("Error initializing game texture");
 
+	if(!squareTexture.initialize(graphics, SQUARE_IMAGE))
+		DebugOut("Error initializing square texture");
+
 	// nebula
 	if (!nebula.initialize(graphics, 0, 0, 0, &nebulaTexture))
 		DebugOut("Error initializing nebula");
@@ -48,6 +51,24 @@ void Spacewar::initialize(HWND hwnd)
 	// place planet in center of screen
 	/*planet.setX(GAME_WIDTH * 0.5f - planet.getWidth() * 0.5f);
 	planet.setY(GAME_HEIGHT * 0.5f - planet.getHeight() * 0.5f);*/
+
+	if(!square1.initialize(this, squareNS::WIDTH, squareNS::HEIGHT, squareNS::TEXTURE_COLS, &squareTexture))
+		DebugOut("Error initializing square");
+	square1.setFrames(squareNS::SQUARE_START_FRAME, squareNS::SQUARE_END_FRAME);
+	square1.setCurrentFrame(squareNS::SQUARE_START_FRAME);
+	square1.setVelocity(D3DXVECTOR2(squareNS::SPEED, 0.0f));
+	//square1.setScale(2);
+	//square1.setDegrees(30);
+
+	if (!square2.initialize(this, squareNS::WIDTH, squareNS::HEIGHT, squareNS::TEXTURE_COLS, &squareTexture))
+		DebugOut("Error initializing square");
+	square2.setFrames(squareNS::SQUARE_START_FRAME, squareNS::SQUARE_END_FRAME);
+	square2.setCurrentFrame(squareNS::SQUARE_START_FRAME);
+	square2.setVelocity(D3DXVECTOR2(squareNS::SPEED, squareNS::SPEED));
+	square2.setY(GAME_HEIGHT / 2);
+	square2.setMoveType(squareNS::SIN_SHAPE);
+	square2.setVelocity(D3DXVECTOR2(squareNS::SPEED / 4, squareNS::SPEED));
+	square2.setScale(2.0f);
 
 	// ship
 	if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTexture))
@@ -117,6 +138,8 @@ void Spacewar::update(float frametime)
 	planet.update(frameTime);
 	ship1.update(frameTime);
 	ship2.update(frameTime);
+	square1.update(frameTime);
+	square2.update(frameTime);
 }
 
 //=============================================================================
@@ -163,10 +186,12 @@ void Spacewar::render()
 {
 	graphics->spriteBegin();                // begin drawing sprites
 
-	nebula.draw();                          // add the orion nebula to the scene
-	planet.draw();                          // add the planet to the scene
-	ship1.draw();							// add the ship to the scene
-	ship2.draw();
+	//nebula.draw();                          // add the orion nebula to the scene
+	//planet.draw();                          // add the planet to the scene
+	//ship1.draw();							// add the ship to the scene
+	//ship2.draw();
+	square1.draw();
+	square2.draw();
 
 	graphics->spriteEnd();                  // end drawing sprites
 }
@@ -181,6 +206,7 @@ void Spacewar::releaseAll()
 	nebulaTexture.onLostDevice();
 	//shipTexture.onLostDevice();
 	gameTexture.onLostDevice();
+	squareTexture.onLostDevice();
 
 	Game::releaseAll();
 	return;
@@ -196,6 +222,7 @@ void Spacewar::resetAll()
 	/*planetTexture.onResetDevice();
 	shipTexture.onResetDevice();*/
 	gameTexture.onResetDevice();
+	squareTexture.onResetDevice();
 
 	Game::resetAll();
 	return;

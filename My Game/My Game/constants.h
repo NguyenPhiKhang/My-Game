@@ -26,11 +26,16 @@
 const char NEBULA_IMAGE[] = "Resources\\orion.jpg";  // photo source NASA/courtesy of nasaimages.org 
 const char PLANET_IMAGE[] = "Resources\\planet.png"; // picture of planet
 const char SHIP_IMAGE[] = "Resources\\ship.png"; //picture of spaceship
-const char TEXTURE_IMAGE[] = "Resources\\textures.png";	// game texture
-const char BACKDROP_IMAGE[] = "pictures\\backdrop.png";
-const char BALL_IMAGE[] = "pictures\\ball.png";
-const char PADDLE_IMAGE[] = "pictures\\paddle.png";
-const char FONT_IMAGE[] = "pictures\\CKfont.png";
+const char TEXTURE_IMAGE[] = "Resources\\textures1.png";	// game texture
+const char BACKDROP_IMAGE[] = "Resources\\backdrop.png";
+const char BALL_IMAGE[] = "Resources\\ball.png";
+const char PADDLE_IMAGE[] = "Resources\\paddle.png";
+const char FONT_IMAGE[] = "Resources\\CKfont.png";
+const char SPACE_IMAGE[] = "Resources\\space.png";	// photo source NASA/courtesy of nasaimages.org
+const char MENU_IMAGE[] = "Resources\\menu.png";
+const char SQUARE_IMAGE[] = "Resources\\square.png";	//dealine
+
+
 
 
 // window

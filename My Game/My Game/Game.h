@@ -25,6 +25,7 @@ protected:
 	DWORD   sleepTime;          // number of milli-seconds to sleep between frames
 	bool    paused;             // true if game is paused
 	bool    initialized;
+	float totalTime;
 	/*int count = 0;
 	float calfps = 0.0f;*/
 

@@ -4,6 +4,7 @@
 \\mac\home\documents\github\my-game\my game\my game\debug\vc141.pdb
 \\mac\home\documents\github\my-game\my game\my game\debug\vc141.idb
 \\mac\home\documents\github\my-game\my game\my game\debug\winmain.obj
+\\mac\home\documents\github\my-game\my game\my game\debug\texturemanager.obj
 \\mac\home\documents\github\my-game\my game\my game\debug\text.obj
 \\mac\home\documents\github\my-game\my game\my game\debug\spacewar.obj
 \\mac\home\documents\github\my-game\my game\my game\debug\ship.obj
@@ -16,7 +17,7 @@
 \\mac\home\documents\github\my-game\my game\my game\debug\dsutil.obj
 \\mac\home\documents\github\my-game\my game\my game\debug\debug.obj
 \\mac\home\documents\github\my-game\my game\my game\debug\audio.obj
-\\mac\home\documents\github\my-game\my game\my game\debug\texturemanager.obj
+\\mac\home\documents\github\my-game\my game\my game\debug\square.obj
 \\mac\home\documents\github\my-game\my game\my game\debug\my game.tlog\link.read.1.tlog
 \\mac\home\documents\github\my-game\my game\my game\debug\my game.tlog\link.command.1.tlog
 \\mac\home\documents\github\my-game\my game\my game\debug\my game.tlog\link.write.1.tlog

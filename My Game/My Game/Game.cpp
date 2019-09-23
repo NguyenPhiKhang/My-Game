@@ -13,6 +13,7 @@ Game::Game()
 	paused = false;             // game is not paused
 	graphics = NULL;
 	initialized = false;
+	totalTime = 0.0f;
 }
 
 //=============================================================================
@@ -179,6 +180,7 @@ void Game::run(HWND hwnd)
 	if (frameTime > MAX_FRAME_TIME)     // if frame rate is very slow
 		frameTime = MAX_FRAME_TIME;     // limit maximum frameTime
 	timeStart = timeEnd;
+	totalTime += frameTime;
 
 	// update(), ai(), and collisions() are pure virtual functions.
 	// These functions must be provided in the class that inherits from Game.
