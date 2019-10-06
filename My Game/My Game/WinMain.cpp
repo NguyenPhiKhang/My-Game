@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <stdlib.h>             // for detecting memory leaks
 #include <crtdbg.h>             // for detecting memory leaks
+#include "GameAssignment2.h"
 #include "spaceWar.h"
 
 // Function prototypes
@@ -12,7 +13,8 @@ bool CreateMainWindow(HWND&, HINSTANCE, int);
 LRESULT WINAPI WinProc(HWND, UINT, WPARAM, LPARAM);
 
 // Game pointer
-Spacewar* game = NULL;
+GameAssignment2* game = NULL;
+//Spacewar* game = NULL;
 HWND hwnd = NULL;
 
 //=============================================================================
@@ -29,7 +31,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	MSG msg;
 
 	// Create the game, sets up message handler
-	game = new Spacewar();
+	game = new GameAssignment2();
+	//game = new Spacewar();
+
 
 	// Create the window
 	if (!CreateMainWindow(hwnd, hInstance, nCmdShow))
@@ -148,8 +152,8 @@ bool CreateMainWindow(HWND& hwnd, HINSTANCE hInstance, int nCmdShow)
 		RECT clientRect;
 		GetClientRect(hwnd, &clientRect);   // get size of client area of window
 		MoveWindow(hwnd,
-			0,                                           // Left
-			0,                                           // Top
+			(int)POS_WINDOW.x,                                           // Left
+			(int)POS_WINDOW.y,                                           // Top
 			GAME_WIDTH + (GAME_WIDTH - clientRect.right),    // Right
 			GAME_HEIGHT + (GAME_HEIGHT - clientRect.bottom), // Bottom
 			TRUE);                                       // Repaint the window

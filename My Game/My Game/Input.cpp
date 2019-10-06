@@ -15,6 +15,17 @@ Input::Input()
 	textIn = "";                        // clear textIn
 	charIn = 0;                         // clear charIn
 
+	// mouse data
+	mouseX = 0;                         // screen X
+	mouseY = 0;                         // screen Y
+	mouseRawX = 0;                      // high-definition X
+	mouseRawY = 0;                      // high-definition Y
+	mouseLButton = false;               // true if left mouse button is down
+	mouseMButton = false;               // true if middle mouse button is down
+	mouseRButton = false;               // true if right mouse button is down
+	mouseX1Button = false;              // true if X1 mouse button is down
+	mouseX2Button = false;              // true if X2 mouse button is down
+
 	for (int i = 0; i < MAX_CONTROLLERS; i++)
 	{
 		controllers[i].vibrateTimeLeft = 0;
@@ -25,17 +36,38 @@ Input::Input()
 //=============================================================================
 // destructor
 //=============================================================================
-Input::~Input() {}
+Input::~Input() { if (mouseCaptured) ReleaseCapture(); /*release mouse*/}
 
 //=============================================================================
-// initialize input
+// Initialize mouse and controller input
+// Set capture=true to capture mouse
 //=============================================================================
-void Input::initialize(HWND hwnd)
+void Input::initialize(HWND hwnd, bool capture)
 {
-	// Clear controllers state
-	ZeroMemory(controllers, sizeof(ControllerState) * MAX_CONTROLLERS);
+	try {
+		mouseCaptured = capture;
 
-	checkControllers();             // check for connected controllers
+		// register high-definition mouse
+		Rid[0].usUsagePage = HID_USAGE_PAGE_GENERIC;
+		Rid[0].usUsage = HID_USAGE_GENERIC_MOUSE;
+		Rid[0].dwFlags = RIDEV_INPUTSINK;
+		Rid[0].hwndTarget = hwnd;
+		RegisterRawInputDevices(Rid, 1, sizeof(Rid[0]));
+
+		if (mouseCaptured)
+			SetCapture(hwnd);           // capture mouse
+
+		// Clear controllers state
+		ZeroMemory(controllers, sizeof(ControllerState) * MAX_CONTROLLERS);
+
+		checkControllers();             // check for connected controllers
+
+	}
+	catch (...)
+	{
+		DebugOut("Error initializing input system");
+		return;
+	}
 }
 
 //=============================================================================
@@ -154,8 +186,45 @@ void Input::clear(UCHAR what)
 		for (size_t i = 0; i < inputNS::KEYS_ARRAY_LEN; i++)
 			keysPressed[i] = false;
 	}
+	if (what & inputNS::MOUSE)           // if clear mouse
+	{
+		mouseX = 0;
+		mouseY = 0;
+		mouseRawX = 0;
+		mouseRawY = 0;
+	}
 	if (what & inputNS::TEXT_IN)
 		clearTextIn();
+}
+
+//=============================================================================
+// Reads mouse screen position into mouseX, mouseY
+//=============================================================================
+void Input::mouseIn(LPARAM lParam)
+{
+	mouseX = GET_X_LPARAM(lParam);
+	mouseY = GET_Y_LPARAM(lParam);
+}
+
+//=============================================================================
+// Reads raw mouse data into mouseRawX, mouseRawY
+// This routine is compatible with a high-definition mouse
+//=============================================================================
+void Input::mouseRawIn(LPARAM lParam)
+{
+	UINT dwSize = 40;
+	static BYTE lpb[40];
+
+	GetRawInputData((HRAWINPUT)lParam, RID_INPUT,
+		lpb, &dwSize, sizeof(RAWINPUTHEADER));
+
+	RAWINPUT* raw = (RAWINPUT*)lpb;
+
+	if (raw->header.dwType == RIM_TYPEMOUSE)
+	{
+		mouseRawX = raw->data.mouse.lLastX;
+		mouseRawY = raw->data.mouse.lLastY;
+	}
 }
 
 //=============================================================================

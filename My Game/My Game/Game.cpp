@@ -46,6 +46,40 @@ LRESULT Game::messageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_CHAR:                           // character entered
 			input->keyIn(wParam);
 			return 0;
+		case WM_MOUSEMOVE:                      // mouse moved
+			input->mouseIn(lParam);
+			return 0;
+		case WM_INPUT:                          // raw mouse data in
+			input->mouseRawIn(lParam);
+			return 0;
+		case WM_LBUTTONDOWN:                    // left mouse button down
+			input->setMouseLButton(true);
+			input->mouseIn(lParam);             // mouse position
+			return 0;
+		case WM_LBUTTONUP:                      // left mouse button up
+			input->setMouseLButton(false);
+			input->mouseIn(lParam);             // mouse position
+			return 0;
+		case WM_MBUTTONDOWN:                    // middle mouse button down
+			input->setMouseMButton(true);
+			input->mouseIn(lParam);             // mouse position
+			return 0;
+		case WM_MBUTTONUP:                      // middle mouse button up
+			input->setMouseMButton(false);
+			input->mouseIn(lParam);             // mouse position
+			return 0;
+		case WM_RBUTTONDOWN:                    // right mouse button down
+			input->setMouseRButton(true);
+			input->mouseIn(lParam);             // mouse position
+			return 0;
+		case WM_RBUTTONUP:                      // right mouse button up
+			input->setMouseRButton(false);
+			input->mouseIn(lParam);             // mouse position
+			return 0;
+		case WM_XBUTTONDOWN: case WM_XBUTTONUP: // mouse X button down/up
+			input->setMouseXButton(wParam);
+			input->mouseIn(lParam);             // mouse position
+			return 0;
 		case WM_DEVICECHANGE:                   // check for controller insert
 			input->checkControllers();
 			return 0;
@@ -68,16 +102,15 @@ void Game::initialize(HWND hw)
 	graphics->initialize(hwnd, GAME_WIDTH, GAME_HEIGHT, FULLSCREEN);
 
 	// initialize input, do not capture mouse
-	input->initialize(hwnd);             // throws GameError
+	input->initialize(hwnd, true);             // throws GameError
 
 	// attempt to set up high resolution timer
 	if (QueryPerformanceFrequency(&timerFreq) == false)
-	{
 		DebugOut("Error initializing high resolution timer");
-		return;
-	}
 
 	QueryPerformanceCounter(&timeStart);        // get starting time
+
+	srand(time(NULL));
 
 	initialized = true;
 }
@@ -200,7 +233,8 @@ void Game::run(HWND hwnd)
 
 	// if Esc key, set window mode 
 	if (input->isKeyDown(ESC_KEY))
-		setDisplayMode(graphicsNS::WINDOW); // set window mode
+		//setDisplayMode(graphicsNS::WINDOW); // set window mode
+		exitGame();
 
 	// Clear input
 	// Call this after all key checks are done

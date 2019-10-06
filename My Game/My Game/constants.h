@@ -3,6 +3,7 @@
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
+#include <d3dx9.h>
 
 //-----------------------------------------------
 // Useful macros
@@ -28,12 +29,13 @@ const char PLANET_IMAGE[] = "Resources\\planet.png"; // picture of planet
 const char SHIP_IMAGE[] = "Resources\\ship.png"; //picture of spaceship
 const char TEXTURE_IMAGE[] = "Resources\\textures1.png";	// game texture
 const char BACKDROP_IMAGE[] = "Resources\\backdrop.png";
-const char BALL_IMAGE[] = "Resources\\ball.png";
 const char PADDLE_IMAGE[] = "Resources\\paddle.png";
 const char FONT_IMAGE[] = "Resources\\CKfont.png";
 const char SPACE_IMAGE[] = "Resources\\space.png";	// photo source NASA/courtesy of nasaimages.org
 const char MENU_IMAGE[] = "Resources\\menu.png";
 const char SQUARE_IMAGE[] = "Resources\\square.png";	//dealine
+const char STARS_IMAGE[] = "Resources\\stars.png";
+const char BALL_IMAGE[] = "Resources\\balls_color.png";
 
 
 
@@ -44,6 +46,7 @@ const char GAME_TITLE[] = "My Game";
 const bool FULLSCREEN = false;              // windowed or fullscreen
 const UINT GAME_WIDTH = 640;				// width of game in pixels
 const UINT GAME_HEIGHT = 480;               // height of game in pixels
+const D3DXVECTOR2 POS_WINDOW = D3DXVECTOR2(100, 100);		// x, y of game
 
 // game
 const double PI = 3.14159265;
@@ -87,6 +90,10 @@ const UCHAR SHIP_RIGHT_KEY = VK_RIGHT; // Right arrow
 const UCHAR SHIP_LEFT_KEY = VK_LEFT; // Left arrow
 const UCHAR SHIP_UP_KEY = VK_UP; // Up arrow
 const UCHAR SHIP_DOWN_KEY = VK_DOWN; // Down arrow
+const UCHAR A_KEY = 0x41;
+const UCHAR S_KEY = 0x53;
+const UCHAR D_KEY = 0x44;
+const UCHAR W_KEY = 0x57;
 
 // weapon types
 enum WEAPON{TORPEDO, SHIP, PLANET};

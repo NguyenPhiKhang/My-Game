@@ -134,6 +134,8 @@ public:
 
 	// Set velocity.
 	virtual void  setVelocity(D3DXVECTOR2 v) { velocity = v; }
+	virtual void  setVelocityX(float x) { velocity.x = x; }
+	virtual void  setVelocityY(float y) { velocity.y = y; }
 
 	// Set delta velocity. Added to velocity in update().
 	virtual void  setDeltaV(D3DXVECTOR2 dv) { deltaV = dv; }
@@ -172,7 +174,7 @@ public:
 	// Update Entity.
 	// typically called once per frame
 	// frameTime is used to regulate the speed of movement and animation
-	virtual void update(float frameTime);
+	virtual void update(float frameTime, bool checkPos = false);
 
 	// Initialize Entity
 	// Pre: *gamePtr = pointer to Game object

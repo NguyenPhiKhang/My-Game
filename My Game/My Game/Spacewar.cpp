@@ -67,8 +67,8 @@ void Spacewar::initialize(HWND hwnd)
 	square2.setVelocity(D3DXVECTOR2(squareNS::SPEED, squareNS::SPEED));
 	square2.setY(GAME_HEIGHT / 2);
 	square2.setMoveType(squareNS::SIN_SHAPE);
-	square2.setVelocity(D3DXVECTOR2(squareNS::SPEED / 4, squareNS::SPEED));
-	square2.setScale(2.0f);
+	square2.setVelocity(D3DXVECTOR2(squareNS::SPEED / 2, squareNS::SPEED));
+	square2.setScale(1.5f);
 
 	// ship
 	if (!ship1.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &gameTexture))
@@ -186,10 +186,10 @@ void Spacewar::render()
 {
 	graphics->spriteBegin();                // begin drawing sprites
 
-	//nebula.draw();                          // add the orion nebula to the scene
-	//planet.draw();                          // add the planet to the scene
-	//ship1.draw();							// add the ship to the scene
-	//ship2.draw();
+	nebula.draw();                          // add the orion nebula to the scene
+	planet.draw();                          // add the planet to the scene
+	ship1.draw();							// add the ship to the scene
+	ship2.draw();
 	square1.draw();
 	square2.draw();
 

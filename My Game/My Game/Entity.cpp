@@ -52,12 +52,12 @@ void Entity::activate()
 // typically called once per frame
 // frameTime is used to regulate the speed of movement and animation
 //=============================================================================
-void Entity::update(float frametime)
+void Entity::update(float frametime, bool checkPos)
 {
 	velocity += deltaV;
 	deltaV.x = 0;
 	deltaV.y = 0;
-	Image::update(frametime);
+	Image::update(frametime, checkPos);
 	rotatedBoxReady = false;	// for rotatedBox collision detection
 }
 

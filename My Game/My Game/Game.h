@@ -8,6 +8,7 @@
 #include "input.h"
 #include "constants.h"
 #include <string.h>
+#include <time.h>
 
 class Game
 {

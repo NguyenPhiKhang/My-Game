@@ -31,10 +31,10 @@ public:
 	LPDIRECT3DTEXTURE9 getTexture(UINT n = 0) const { return (n >= texture.size()) ? NULL : texture[n]; }
 
 	// Returns the texture width n
-	UINT getWidth(UINT n = 0) const { return (n >= texture.size()) ? 0 : width[0]; }
+	UINT getWidth(UINT n = 0) const { return (n >= texture.size()) ? 0 : width[n]; }
 
 	// Return the texture height
-	UINT getHeight(UINT n = 0) const { return (n >= texture.size()) ? 0 : height[0]; }
+	UINT getHeight(UINT n = 0) const { return (n >= texture.size()) ? 0 : height[n]; }
 
 	// Initialize the textureManager
 	// Pre: *g points to Graphics object

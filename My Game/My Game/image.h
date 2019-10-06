@@ -25,6 +25,7 @@ protected:
 	bool    visible;        // true when visible
 	bool    initialized;    // true when successfully initialized
 	bool    animComplete;   // true when loop is false and endFrame has finished displaying
+	std::vector<RECT> posAnims;
 
 public:
 	// Constructor
@@ -94,6 +95,9 @@ public:
 	// Return direction
 	virtual int		getDirection() { return spriteData.direction; }
 
+	virtual RECT getAnim(int index = 0) { return posAnims[index]; }
+	virtual std::vector<RECT> getAnims() { return posAnims; }
+
 	////////////////////////////////////////
 	//           Set functions            //
 	////////////////////////////////////////
@@ -125,10 +129,10 @@ public:
 	virtual void setFrames(int s, int e) { startFrame = s; endFrame = e; }
 
 	// Set current frame of animation.
-	virtual void setCurrentFrame(int c);
+	virtual void setCurrentFrame(int c, RECT r = { 0,0,0,0 });
 
 	// Set spriteData.rect to draw currentFrame
-	virtual void setRect();
+	virtual void setRect(RECT r = {0,0,0,0});
 
 	// Set spriteData.rect to r.
 	virtual void setSpriteDataRect(RECT r) { spriteData.rect = r; }
@@ -150,6 +154,8 @@ public:
 
 	// Set direction
 	virtual void setDirection(int _direction) { spriteData.direction = _direction; }
+
+	virtual void setAnim(RECT r, int index = 0) { posAnims[index] = r; }
 
 	////////////////////////////////////////
 	//         Other functions            //
@@ -187,7 +193,9 @@ public:
 	virtual void draw(SpriteData sd, COLOR_ARGB color = graphicsNS::WHITE, UINT textureN=0); // draw with SpriteData using color as filter
 
 	// Update the animation. frameTime is used to regulate the speed.
-	virtual void update(float frameTime);
+	virtual void update(float frameTime, bool checkPos = false);
+
+	virtual void addAnim(RECT r) { posAnims.push_back(r); };
 };
 
 #endif

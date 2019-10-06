@@ -67,13 +67,18 @@ bool Image::initialize(Graphics* g, int width, int height, int ncols,
 		if (cols == 0)
 			cols = 1;                               // if 0 cols use 1
 
-		// configure spriteData.rect to draw currentFrame
-		spriteData.rect.left = (currentFrame % cols) * spriteData.width;
-		// right edge + 1
-		spriteData.rect.right = spriteData.rect.left + spriteData.width;
-		spriteData.rect.top = (currentFrame / cols) * spriteData.height;
-		// bottom edge + 1
-		spriteData.rect.bottom = spriteData.rect.top + spriteData.height;
+		/*if (r.top == 0 && r.left == 0 && r.right == 0 && r.bottom == 0)
+		{*/
+			// configure spriteData.rect to draw currentFrame
+			spriteData.rect.left = (currentFrame % cols) * spriteData.width;
+			// right edge + 1
+			spriteData.rect.right = spriteData.rect.left + spriteData.width;
+			spriteData.rect.top = (currentFrame / cols) * spriteData.height;
+			// bottom edge + 1
+			spriteData.rect.bottom = spriteData.rect.top + spriteData.height;
+		/*}
+		else
+			spriteData.rect = r;*/
 	}
 	catch (...) { return false; }
 	initialized = true;                                // successfully initialized
@@ -97,6 +102,7 @@ void Image::draw(COLOR_ARGB color, UINT textureN)
 		graphics->drawSprite(spriteData, colorFilter);  // use colorFilter
 	else
 		graphics->drawSprite(spriteData, color);        // use color as filter
+
 }
 
 //=============================================================================
@@ -123,7 +129,7 @@ void Image::draw(SpriteData sd, COLOR_ARGB color, UINT textureN)
 // typically called once per frame
 // frameTime is used to regulate the speed of movement and animation
 //=============================================================================
-void Image::update(float frameTime)
+void Image::update(float frameTime, bool checkPos)
 {
 	if (endFrame - startFrame > 0)          // if animated sprite
 	{
@@ -142,7 +148,9 @@ void Image::update(float frameTime)
 					animComplete = true;    // animation complete
 				}
 			}
-			setRect();                      // set spriteData.rect
+			if (checkPos)
+				setRect(posAnims[currentFrame]);                      // set spriteData.rect
+			else setRect();
 		}
 	}
 }
@@ -150,27 +158,34 @@ void Image::update(float frameTime)
 //=============================================================================
 // Set the current frame of the image
 //=============================================================================
-void Image::setCurrentFrame(int c)
+void Image::setCurrentFrame(int c, RECT r)
 {
 	if (c >= 0)
 	{
 		currentFrame = c;
 		animComplete = false;
-		setRect();                          // set spriteData.rect
+		setRect(r);                          // set spriteData.rect
 	}
 }
 
 //=============================================================================
 //  Set spriteData.rect to draw currentFrame
 //=============================================================================
-inline void Image::setRect()
+inline void Image::setRect(RECT r)
 {
-	// configure spriteData.rect to draw currentFrame
-	spriteData.rect.left = (currentFrame % cols) * spriteData.width;
-	// right edge + 1
-	spriteData.rect.right = spriteData.rect.left + spriteData.width;
-	spriteData.rect.top = (currentFrame / cols) * spriteData.height;
-	// bottom edge + 1
-	spriteData.rect.bottom = spriteData.rect.top + spriteData.height;
+	if (r.top == 0 && r.left == 0 && r.right == 0 && r.bottom == 0)
+	{
+		// configure spriteData.rect to draw currentFrame
+		spriteData.rect.left = (currentFrame % cols) * spriteData.width;
+		// right edge + 1
+		spriteData.rect.right = spriteData.rect.left + spriteData.width;
+		spriteData.rect.top = (currentFrame / cols) * spriteData.height;
+		// bottom edge + 1
+		spriteData.rect.bottom = spriteData.rect.top + spriteData.height;
+	}
+	else
+	{
+		spriteData.rect = r;
+	}
 }
 

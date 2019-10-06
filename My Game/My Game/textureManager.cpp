@@ -24,7 +24,7 @@ TextureManager::~TextureManager()
 //		 If file is a.txt file it is assumed to contain individual texture
 //       file names, one name per line.
 //=============================================================================
-bool TextureManager::initialize(Graphics* g, std::string file)
+bool TextureManager::initialize(Graphics* g, std::string file) // anha.png
 {
 	bool success = true;
 	try {

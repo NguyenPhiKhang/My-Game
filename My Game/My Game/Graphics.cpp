@@ -281,6 +281,9 @@ HRESULT Graphics::createVertexBuffer(VertexC verts[], UINT size, LPDIRECT3DVERTE
 
 //=============================================================================
 // Display a quad with alpha transparency using Triangle Fan
+
+
+
 // Pre: createVertexBuffer was used to create vertexBuffer containing four
 //      vertices defining the quad in clockwise order.
 //      g3ddev->BeginScene was called
@@ -458,20 +461,22 @@ void Graphics::changeDisplayMode(graphicsNS::DISPLAY_MODE mode)
 		reset();
 		if (fullscreen)  // fullscreen
 		{
+			ShowCursor(false);
 			SetWindowLong(hwnd, GWL_STYLE, WS_EX_TOPMOST | WS_VISIBLE | WS_POPUP);
 		}
 		else            // windowed
 		{
+			ShowCursor(true);
 			SetWindowLong(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
-			SetWindowPos(hwnd, HWND_TOP, 0, 0, GAME_WIDTH, GAME_HEIGHT,
+			SetWindowPos(hwnd, HWND_TOP, (int)POS_WINDOW.x, (int)POS_WINDOW.y, GAME_WIDTH, GAME_HEIGHT,
 				SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
 
 			// Adjust window size so client area is GAME_WIDTH x GAME_HEIGHT
 			RECT clientRect;
 			GetClientRect(hwnd, &clientRect);   // get size of client area of window
 			MoveWindow(hwnd,
-				0,                                           // Left
-				0,                                           // Top
+				(int)POS_WINDOW.x,                                           // Left
+				(int)POS_WINDOW.x,                                           // Top
 				GAME_WIDTH + (GAME_WIDTH - clientRect.right),    // Right
 				GAME_HEIGHT + (GAME_HEIGHT - clientRect.bottom), // Bottom
 				TRUE);                                       // Repaint the window
@@ -482,15 +487,15 @@ void Graphics::changeDisplayMode(graphicsNS::DISPLAY_MODE mode)
 	{
 		// An error occured, try windowed mode 
 		SetWindowLong(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
-		SetWindowPos(hwnd, HWND_TOP, 0, 0, GAME_WIDTH, GAME_HEIGHT,
+		SetWindowPos(hwnd, HWND_TOP, (int)POS_WINDOW.x, (int)POS_WINDOW.y, GAME_WIDTH, GAME_HEIGHT,
 			SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
 
 		// Adjust window size so client area is GAME_WIDTH x GAME_HEIGHT
 		RECT clientRect;
 		GetClientRect(hwnd, &clientRect);   // get size of client area of window
 		MoveWindow(hwnd,
-			0,                                           // Left
-			0,                                           // Top
+			(int)POS_WINDOW.x,                                           // Left
+			(int)POS_WINDOW.y,                                           // Top
 			GAME_WIDTH + (GAME_WIDTH - clientRect.right),    // Right
 			GAME_HEIGHT + (GAME_HEIGHT - clientRect.bottom), // Bottom
 			TRUE);                                       // Repaint the window

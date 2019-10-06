@@ -50,9 +50,17 @@ void Square::update(float frameTime)
 		totalTime += frameTime;
 		spriteData.x += velocity.x * frameTime;
 		spriteData.y = velocity.y * cos(((float)PI / 2) * totalTime + (float)PI / 2) + GAME_HEIGHT / 2;
-		spriteData.angle += frameTime * squareNS::ROTATION_RATE;
+		//spriteData.angle += frameTime * squareNS::ROTATION_RATE;
 
-		if (spriteData.x > GAME_WIDTH - squareNS::WIDTH*getScale() || spriteData.x < 0)
+		if (spriteData.x > GAME_WIDTH - squareNS::WIDTH * getScale() /*|| spriteData.x < 0.0f*/)
+		{
+			spriteData.x = GAME_WIDTH- squareNS::WIDTH*getScale();
+			velocity.x *= -1;
+		}
+		if (spriteData.x < 0.0f)
+		{
 			spriteData.x = 0.0f;
+			velocity.x *= -1;
+		}
 	}
 }
