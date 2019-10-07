@@ -14,6 +14,7 @@ Game::Game()
 	graphics = NULL;
 	initialized = false;
 	totalTime = 0.0f;
+	fpsOn = false;
 }
 
 //=============================================================================
@@ -110,7 +111,7 @@ void Game::initialize(HWND hw)
 
 	QueryPerformanceCounter(&timeStart);        // get starting time
 
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	initialized = true;
 }

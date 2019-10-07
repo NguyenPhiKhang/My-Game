@@ -5,6 +5,8 @@ Ball::Ball()
 	spriteData.width = ballNS::WIDTH;
 	spriteData.height = ballNS::HEIGHT;
 	edge = { -ballNS::WIDTH / 2,-ballNS::HEIGHT / 2,ballNS::WIDTH / 2, ballNS::HEIGHT / 2 };
+	outsideScopeLeft = false;
+	outsideScopeRight = false;
 }
 
 void Ball::update(float frameTime, bool checkPos)
@@ -12,8 +14,13 @@ void Ball::update(float frameTime, bool checkPos)
 	Entity::update(frameTime, checkPos);
 	spriteData.x += velocity.x * frameTime;
 	spriteData.y += velocity.y * frameTime;
+	outsideScopeLeft = false;
+	outsideScopeRight = false;
 	if (spriteData.x > GAME_WIDTH - ballNS::WIDTH||spriteData.x <0)
 	{
+		if (spriteData.x < 0)
+			outsideScopeLeft = true;
+		else outsideScopeRight = true;
 		Sleep(500);
 		spriteData.x = GAME_WIDTH/2 - ballNS::WIDTH/2;
 		spriteData.y = GAME_HEIGHT / 2 - ballNS::HEIGHT / 2;
@@ -33,9 +40,9 @@ void Ball::update(float frameTime, bool checkPos)
 		spriteData.y = GAME_HEIGHT - ballNS::HEIGHT;
 		velocity.y *= -1;
 	}
-	if (spriteData.y < 0)
+	if (spriteData.y < TEXT_FRAME_HEIGHT)
 	{
-		spriteData.y = 0;
+		spriteData.y = TEXT_FRAME_HEIGHT;
 		velocity.y *= -1;
 	}
 }

@@ -36,7 +36,7 @@ namespace textNS
 	const int BOLD_SIZE = 4;        // pixel shift for bold display
 }
 
-class Text:Image
+class Text:public Image
 {
 private:
 	TextureManager fontTexture;     // a texture for each font

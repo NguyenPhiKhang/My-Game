@@ -1,7 +1,7 @@
 ﻿
 Project Performance Summary:
-       78 ms  \\Mac\Home\Documents\GitHub\My-Game\My Game\My Game\My Game.vcxproj   1 calls
-                 78 ms  Clean                                      1 calls
+       94 ms  \\Mac\Home\Documents\GitHub\My-Game\My Game\My Game\My Game.vcxproj   1 calls
+                 94 ms  Clean                                      1 calls
 
 Target Performance Summary:
         0 ms  _CheckForInvalidConfigurationAndPlatform   1 calls
@@ -15,9 +15,9 @@ Target Performance Summary:
         0 ms  _GetProjectReferenceTargetFrameworkProperties   1 calls
         0 ms  _SplitProjectReferencesByFileExistence     1 calls
         0 ms  AssignProjectConfiguration                 1 calls
-        0 ms  CoreClean                                  1 calls
         0 ms  BeforeClean                                1 calls
         0 ms  _PrepareForClean                           1 calls
         0 ms  PrepareProjectReferences                   1 calls
         0 ms  Clean                                      1 calls
+       16 ms  CoreClean                                  1 calls
        78 ms  CoreCppClean                               1 calls

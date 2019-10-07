@@ -6,21 +6,36 @@
 #include "Ball.h"
 #include "Paddle.h"
 #include "image.h"
+#include "Text.h"
+#include <string>
+
 
 class GameAssignment2: public Game
 {
 private: 
-	TextureManager spaceTexture;
-	TextureManager ballTexture;
-	TextureManager paddleTexture;
+	TextureManager* spaceTexture;
+	TextureManager* ballTexture;
+	TextureManager* paddleTexture;
 
-	Ball ball;
-	Paddle paddle1;
-	Paddle paddle2;
-	Image space;
+	Ball* ball;
+	Paddle* paddle1;
+	Paddle* paddle2;
+	Image* space;
+
+	Text* fontCK;
+
+	//scores
+	UINT scorePaddle1;
+	UINT scorePaddle2;
+
+	// text fps, score
+	char textFPS[20];
+	char textScorePaddle1[10];
+	char textScorePaddle2[10];
+	
 public:
-	GameAssignment2() {};
-	~GameAssignment2() {};
+	GameAssignment2();
+	~GameAssignment2();
 
 	// Initialize the game
 	void initialize(HWND hwnd);

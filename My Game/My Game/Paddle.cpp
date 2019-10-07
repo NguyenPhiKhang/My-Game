@@ -10,8 +10,8 @@ Paddle::Paddle()
 void Paddle::update(float frameTime, bool checkPos)
 {
 	Entity::update(frameTime, checkPos);
-	if (spriteData.y < 0)
-		spriteData.y = 0;
+	if (spriteData.y < TEXT_FRAME_HEIGHT)
+		spriteData.y = TEXT_FRAME_HEIGHT;
 	if (spriteData.y > GAME_HEIGHT - paddleNS::HEIGHT)
 		spriteData.y = GAME_HEIGHT - paddleNS::HEIGHT;
 }

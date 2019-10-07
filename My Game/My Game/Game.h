@@ -23,6 +23,7 @@ protected:
 	LARGE_INTEGER timerFreq;    // Performance Counter frequency
 	float   frameTime;          // time required for last frame
 	float   fps;                // frames per second
+	bool fpsOn;					// true to display fps
 	DWORD   sleepTime;          // number of milli-seconds to sleep between frames
 	bool    paused;             // true if game is paused
 	bool    initialized;
