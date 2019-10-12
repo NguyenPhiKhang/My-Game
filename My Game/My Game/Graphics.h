@@ -74,7 +74,8 @@ struct SpriteData
 	LPDIRECT3DTEXTURE9  texture;    // pointer to texture
 	bool        flipHorizontal; // true to flip sprite horizontally (mirror)
 	bool        flipVertical;   // true to flip sprite vertically
-	int			direction;		
+	int			direction;
+	int state;
 };
 
 class Graphics

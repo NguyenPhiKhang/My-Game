@@ -8,7 +8,8 @@
 namespace ballNS {
 	const int WIDTH = 16;
 	const int HEIGHT = 16;
-	const float SPEED = 180.0f;
+	const float SPEED = 200.0f;
+
 	const int BALL_START_FRAME = 0;
 	const int BALL_END_FRAME = 4;
 	const float X = GAME_WIDTH / 2 - WIDTH / 2;

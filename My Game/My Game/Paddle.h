@@ -4,6 +4,11 @@
 #include "constants.h"
 #include "Entity.h"
 
+constexpr auto PADDLE_STATE_IDLE = 0;
+constexpr auto PADDLE_STATE_MOVE_UP = 100;
+constexpr auto PADDLE_STATE_MOVE_DOWN = 200;
+
+
 namespace paddleNS {
 	const int WIDTH = 16;
 	const int HEIGHT = 64;
@@ -20,6 +25,7 @@ class Paddle: public Entity
 public:
 	Paddle();
 	void update(float frameTime, bool checkPos = false);
+	void setState(int state);
 };
 
 #endif

@@ -44,7 +44,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// main message loop
 	int done = 0;
-	char fps[50];
+	//char fps[50];
 	while (!done)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -60,8 +60,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		else
 		{
 			game->run(hwnd);    // run the game loop
-			sprintf_s(fps, "%s || FPS: %.0f", GAME_TITLE, game->getFPS());
-			SetWindowTextA(hwnd, fps);
+			/*sprintf_s(fps, "%s || FPS: %.0f", GAME_TITLE, game->getFPS());
+			SetWindowTextA(hwnd, fps);*/
 		}
 		
 	}

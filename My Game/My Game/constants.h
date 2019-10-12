@@ -93,10 +93,11 @@ const UCHAR SHIP_RIGHT_KEY = VK_RIGHT; // Right arrow
 const UCHAR SHIP_LEFT_KEY = VK_LEFT; // Left arrow
 const UCHAR SHIP_UP_KEY = VK_UP; // Up arrow
 const UCHAR SHIP_DOWN_KEY = VK_DOWN; // Down arrow
-const UCHAR A_KEY = 0x41;
-const UCHAR S_KEY = 0x53;
-const UCHAR D_KEY = 0x44;
-const UCHAR W_KEY = 0x57;
+const UCHAR A_KEY = 'A';
+const UCHAR S_KEY = 'S';
+const UCHAR D_KEY = 'D';
+const UCHAR W_KEY = 'W';
+const UCHAR PAUSE_GAME_KEY = VK_SPACE;
 
 // weapon types
 enum WEAPON{TORPEDO, SHIP, PLANET};

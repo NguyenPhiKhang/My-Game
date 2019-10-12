@@ -22,6 +22,8 @@ Entity::Entity():Image()
 	health = 100;
 	gravity = entityNS::GRAVITY;
 	pixelsColliding = 0;
+	dx = 0.0f;
+	dy = 0.0f;
 }
 
 //=============================================================================
@@ -47,17 +49,28 @@ void Entity::activate()
 	active = true;
 }
 
+// get coordinate of entity
+void Entity::getBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+	left = spriteData.x;
+	top = spriteData.y;
+	right = left + spriteData.width;
+	bottom = top + spriteData.height;
+}
+
 //=============================================================================
 // update
 // typically called once per frame
 // frameTime is used to regulate the speed of movement and animation
 //=============================================================================
-void Entity::update(float frametime, bool checkPos)
+void Entity::update(float frameTime, bool checkPos)
 {
 	velocity += deltaV;
 	deltaV.x = 0;
-	deltaV.y = 0;
-	Image::update(frametime, checkPos);
+	deltaV.y = 0;	
+	dx = frameTime * velocity.x;
+	dy = frameTime * velocity.y;
+	Image::update(frameTime, checkPos);
 	rotatedBoxReady = false;	// for rotatedBox collision detection
 }
 

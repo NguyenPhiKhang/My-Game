@@ -28,34 +28,34 @@ void GameAssignment2::initialize(HWND hwnd)
 	if (!spaceTexture->initialize(graphics, FRAME_GAME))
 		DebugOut("Error initializing space texture");
 
-	if(!paddleTexture->initialize(graphics, PADDLE_IMAGE))
+	if (!paddleTexture->initialize(graphics, PADDLE_IMAGE))
 		DebugOut("Error initializing paddle texture");
 
-	if(!ballTexture->initialize(graphics, BALL_IMAGE))
+	if (!ballTexture->initialize(graphics, BALL_IMAGE))
 		DebugOut("Error initializing ball texture");
 
-	if(!space->initialize(graphics,GAME_WIDTH - (int)TEXT_FRAME_WIDTH*2, GAME_HEIGHT-(int)TEXT_FRAME_HEIGHT,0,spaceTexture))
+	if (!space->initialize(graphics, GAME_WIDTH - (int)TEXT_FRAME_WIDTH * 2, GAME_HEIGHT - (int)TEXT_FRAME_HEIGHT, 0, spaceTexture))
 		DebugOut("Error initializing space");
 	space->setY(TEXT_FRAME_HEIGHT);
 	space->setX(TEXT_FRAME_WIDTH);
-	
-	if (!paddle1->initialize(this, paddleNS::WIDTH, paddleNS::HEIGHT,0, paddleTexture))
+
+	if (!paddle1->initialize(this, paddleNS::WIDTH, paddleNS::HEIGHT, 0, paddleTexture))
 		DebugOut("Error initalizing paddle 1");
-	paddle1->addAnim(RECT{92,51,92+paddleNS::WIDTH,51+paddleNS::HEIGHT});
+	paddle1->addAnim(RECT{ 92,51,92 + paddleNS::WIDTH,51 + paddleNS::HEIGHT });
 	paddle1->setFrames(paddleNS::PADDLE_START_FRAME, paddleNS::PADDLE_END_FRAME);
 	paddle1->setCurrentFrame(paddleNS::PADDLE_START_FRAME, paddle1->getAnim());
 	paddle1->setX(0.0f);
-	paddle1->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT/2);
+	paddle1->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
 	//paddle1->setDegrees(90);
 	paddle1->setCollisionType(entityNS::BOX);
 
 	if (!paddle2->initialize(this, paddleNS::WIDTH, paddleNS::HEIGHT, 0, paddleTexture))
 		DebugOut("Error initalizing paddle 2");
-	paddle2->addAnim(RECT{ 112, 51, 112 + paddleNS::WIDTH-1, 51 + paddleNS::HEIGHT-1 });
+	paddle2->addAnim(RECT{ 112, 51, 112 + paddleNS::WIDTH - 1, 51 + paddleNS::HEIGHT - 1 });
 	paddle2->setFrames(paddleNS::PADDLE_START_FRAME, paddleNS::PADDLE_END_FRAME);
 	paddle2->setCurrentFrame(paddleNS::PADDLE_START_FRAME, paddle2->getAnim());
 	paddle2->setX(GAME_WIDTH - paddleNS::WIDTH);
-	paddle2->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT/2);
+	paddle2->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
 	paddle2->flipHorizontal(true);
 	paddle2->setCollisionType(entityNS::BOX);
 
@@ -100,7 +100,7 @@ void GameAssignment2::ai()
 void GameAssignment2::collisions()
 {
 	D3DXVECTOR2 collisionVector;
-	if (ball->collidesWith(*paddle1, collisionVector)|| ball->collidesWith(*paddle2, collisionVector))
+	if (ball->collidesWith(*paddle1, collisionVector) || ball->collidesWith(*paddle2, collisionVector))
 	{
 		ball->setVelocityX(-ball->getVelocity().x);
 	}
@@ -110,18 +110,16 @@ void GameAssignment2::render()
 {
 	graphics->spriteBegin();                // begin drawing sprites
 
-	space->draw();
 	paddle1->draw();
 	DebugOut("x : %.2f\n", paddle1->getX());
 	paddle2->draw();
-	ball->draw();
 
 	// display Text
 	fontCK->setProportional(false);
 	fontCK->setFontColor(graphicsNS::RED);
 	fontCK->setBackColor(graphicsNS::TRANSCOLOR);
-	fontCK->setFontHeight(textNS::FONT_HEIGHT/2);
-	fontCK->print("PONG GAME", GAME_WIDTH/2 - (textNS::FONT_WIDTH*9)/4, TEXT_FRAME_HEIGHT/2-textNS::FONT_HEIGHT/4);
+	fontCK->setFontHeight(textNS::FONT_HEIGHT / 2);
+	fontCK->print("PONG GAME", GAME_WIDTH / 2 - (textNS::FONT_WIDTH * 9) / 4, TEXT_FRAME_HEIGHT / 2 - textNS::FONT_HEIGHT / 4);
 
 	// display fps
 	if (fpsOn)
@@ -130,17 +128,20 @@ void GameAssignment2::render()
 		fontCK->setBackColor(graphicsNS::TRANSCOLOR);
 		fontCK->setFontHeight(textNS::FONT_HEIGHT / 4);
 		sprintf_s(textFPS, "FPS: %.0f", fps);
-		fontCK->print(textFPS, GAME_WIDTH - (textNS::FONT_WIDTH*7) / 4, 5);
+		fontCK->print(textFPS, GAME_WIDTH - (textNS::FONT_WIDTH * 7) / 4, 5);
 	}
 
 	// display scores
 	fontCK->setFontColor(graphicsNS::PURPLE);
 	fontCK->setBackColor(graphicsNS::TRANSCOLOR);
-	fontCK->setFontHeight(textNS::FONT_HEIGHT/2);
+	fontCK->setFontHeight(textNS::FONT_HEIGHT / 2);
 	sprintf_s(textScorePaddle1, "%d", scorePaddle1);
 	sprintf_s(textScorePaddle2, "%d", scorePaddle2);
-	fontCK->print(textScorePaddle1, GAME_WIDTH / 2 - (textNS::FONT_WIDTH * 3) / ((scorePaddle1>9)?2:3), 50);
+	fontCK->print(textScorePaddle1, GAME_WIDTH / 2 - (textNS::FONT_WIDTH * 3) / ((scorePaddle1 > 9) ? 2 : 3), 50);
 	fontCK->print(textScorePaddle2, GAME_WIDTH / 2 + (textNS::FONT_WIDTH * 3) / 6, 50);
+
+	space->draw();
+	ball->draw();
 
 	graphics->spriteEnd();                  // end drawing sprites
 }

@@ -45,6 +45,7 @@ protected:
 	bool    active;         // only active entities may collide
 	bool    rotatedBoxReady;    // true when rotated collision box is ready
 	DWORD pixelsColliding;		// number of pixels colliding in pixel perfect collision
+	float dx, dy;
 
 	// --- The following functions are protected because they are not intended to be
 	// --- called from outside the class.
@@ -128,6 +129,10 @@ public:
 	// Return number of pixels colliding in pixel perfect collision
 	virtual DWORD getPixelsColliding() const { return pixelsColliding; }
 
+	virtual float getDX() { return dx; }
+	virtual float getDY() { return dy; }
+	virtual void getBoundingBox(float& left, float& top, float& right, float& bottom);
+
 	////////////////////////////////////////
 	//           Set functions            //
 	////////////////////////////////////////
@@ -166,6 +171,9 @@ public:
 
 	// Set rotatedBoxReady. Set to false to force recalculation.
 	virtual void setRotatedBoxReady(bool r) { rotatedBoxReady = r; }
+
+	virtual void setDX(float dx) { this->dx = dx; }
+	virtual void setDY(float dy) { this->dy = dy; }
 
 	////////////////////////////////////////
 	//         Other functions            //

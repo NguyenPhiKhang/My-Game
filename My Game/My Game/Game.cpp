@@ -15,6 +15,7 @@ Game::Game()
 	initialized = false;
 	totalTime = 0.0f;
 	fpsOn = false;
+	fps = 0.0f;
 }
 
 //=============================================================================
@@ -201,9 +202,10 @@ void Game::run(HWND hwnd)
 
 	/*count++;
 	calfps += frameTime;
+	char s[50];
 	if (calfps >= 1.0f)
 	{
-		sprintf_s(s, "count: %d fr/s|| CalFPS: %.0f seconds", count, calfps);
+		sprintf_s(s, "count: %d fr/s|| CalFPS: %.2f seconds", count, calfps);
 		SetWindowTextA(hwnd, s);
 		count = 0;
 		calfps -= 0.99f;
@@ -265,3 +267,4 @@ void Game::deleteAll()
 	safeDelete(input);
 	initialized = false;
 }
+

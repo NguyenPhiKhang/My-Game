@@ -98,6 +98,8 @@ public:
 	virtual RECT getAnim(int index = 0) { return posAnims[index]; }
 	virtual std::vector<RECT> getAnims() { return posAnims; }
 
+	virtual int getState() { return this->spriteData.state; }
+
 	////////////////////////////////////////
 	//           Set functions            //
 	////////////////////////////////////////
@@ -145,6 +147,8 @@ public:
 
 	// Set color filter. (use WHITE for no change)
 	virtual void setColorFilter(COLOR_ARGB color) { colorFilter = color; }
+
+	virtual void setState(int state) { this->spriteData.state = state; }
 
 	// Set TextureManager
 	virtual void setTextureManager(TextureManager* textureM)

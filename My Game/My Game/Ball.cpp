@@ -16,9 +16,9 @@ void Ball::update(float frameTime, bool checkPos)
 	spriteData.y += velocity.y * frameTime;
 	outsideScopeLeft = false;
 	outsideScopeRight = false;
-	if (spriteData.x > GAME_WIDTH - ballNS::WIDTH||spriteData.x <0)
+	if (spriteData.x > GAME_WIDTH -1.5f*ballNS::WIDTH||spriteData.x <ballNS::WIDTH*0.5f)
 	{
-		if (spriteData.x < 0)
+		if (spriteData.x < ballNS::WIDTH*0.5f)
 			outsideScopeLeft = true;
 		else outsideScopeRight = true;
 		Sleep(500);
