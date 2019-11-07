@@ -16,6 +16,9 @@ private:
 	TextureManager* spaceTexture;
 	TextureManager* ballTexture;
 	TextureManager* paddleTexture;
+	TextureManager* testTexture;
+
+	Image* test;
 
 	Ball* ball;
 	Paddle* paddle1;

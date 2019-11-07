@@ -20,6 +20,9 @@ Image::Image()
 	spriteData.flipHorizontal = false;
 	spriteData.flipVertical = false;
 	spriteData.direction = D_RIGHT;
+	spriteData.ViewportX = 0.0f;
+	spriteData.ViewportY = 0.0f;
+	spriteData.id = 0;
 	cols = 1;
 	textureManager = NULL;
 	startFrame = 0;
@@ -122,6 +125,11 @@ void Image::draw(SpriteData sd, COLOR_ARGB color, UINT textureN)
 		graphics->drawSprite(sd, colorFilter);  // use colorFilter
 	else
 		graphics->drawSprite(sd, color);        // use color as filter
+}
+
+void Image::draw(float x, float y)
+{
+
 }
 
 //=============================================================================

@@ -5,6 +5,8 @@ GameAssignment2::GameAssignment2()
 	spaceTexture = new TextureManager();
 	ballTexture = new TextureManager();
 	paddleTexture = new TextureManager();
+	testTexture = new TextureManager();
+	test = new Image();
 	ball = new Ball();
 	paddle1 = new Paddle();
 	paddle2 = new Paddle();
@@ -24,6 +26,8 @@ GameAssignment2::~GameAssignment2()
 void GameAssignment2::initialize(HWND hwnd)
 {
 	Game::initialize(hwnd);
+
+	testTexture->initialize(graphics, "Resources\\test.png");
 
 	if (!spaceTexture->initialize(graphics, FRAME_GAME))
 		DebugOut("Error initializing space texture");
@@ -69,6 +73,15 @@ void GameAssignment2::initialize(HWND hwnd)
 	ball->setVelocity(D3DXVECTOR2(ballNS::SPEED, ballNS::SPEED));
 	ball->setCollisionType(entityNS::BOX);
 
+	test->initialize(graphics, 62, 79, 39, testTexture);
+	test->setFrames(0, 38);
+	test->setCurrentFrame(0);
+	test->setFrameDelay(0.15f);
+	test->setScale(3.0f);
+	test->setX(320);
+	test->setY(240);
+	//test->flipHorizontal(true);
+
 	//init TEXT
 	if (!fontCK->initialize(graphics, FONT_IMAGE))
 		DebugOut("Error initializing font");
@@ -91,6 +104,12 @@ void GameAssignment2::update(float frameTime)
 		scorePaddle2++;
 	if (ball->getOutsideScopeRight())
 		scorePaddle1++;
+	if (test->getCurrentFrame() == 3 || test->getCurrentFrame() == 6 || test->getCurrentFrame() == 21 || test->getCurrentFrame() == 38)
+		test->setFrameDelay(0.6f);
+	else if (test->getCurrentFrame() == 0)
+		test->setFrameDelay(1.0f);
+	else test->setFrameDelay(0.15f);
+	test->update(frameTime);
 }
 
 void GameAssignment2::ai()
@@ -111,7 +130,7 @@ void GameAssignment2::render()
 	graphics->spriteBegin();                // begin drawing sprites
 
 	paddle1->draw();
-	DebugOut("x : %.2f\n", paddle1->getX());
+	//DebugOut("x : %.2f\n", paddle1->getX());
 	paddle2->draw();
 
 	// display Text
@@ -119,7 +138,7 @@ void GameAssignment2::render()
 	fontCK->setFontColor(graphicsNS::RED);
 	fontCK->setBackColor(graphicsNS::TRANSCOLOR);
 	fontCK->setFontHeight(textNS::FONT_HEIGHT / 2);
-	fontCK->print("PONG GAME", GAME_WIDTH / 2 - (textNS::FONT_WIDTH * 9) / 4, TEXT_FRAME_HEIGHT / 2 - textNS::FONT_HEIGHT / 4);
+	fontCK->print("PONG GAME", (int)(GAME_WIDTH / 2 - (textNS::FONT_WIDTH * 9) / 4), (int)(TEXT_FRAME_HEIGHT / 2 - textNS::FONT_HEIGHT / 4));
 
 	// display fps
 	if (fpsOn)
@@ -142,6 +161,7 @@ void GameAssignment2::render()
 
 	space->draw();
 	ball->draw();
+	test->draw();
 
 	graphics->spriteEnd();                  // end drawing sprites
 }

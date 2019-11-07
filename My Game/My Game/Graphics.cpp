@@ -364,7 +364,7 @@ void Graphics::drawSprite(const SpriteData& spriteData, COLOR_ARGB color)
 	D3DXVECTOR2 spriteCenter = D3DXVECTOR2((float)(spriteData.width / 2 * spriteData.scale),
 										   (float)(spriteData.height / 2 * spriteData.scale));
 	// Screen position of the sprite
-	D3DXVECTOR2 translate = D3DXVECTOR2((float)spriteData.x, (float)spriteData.y);
+	D3DXVECTOR2 translate = D3DXVECTOR2((float)spriteData.ViewportX, (float)spriteData.ViewportY);
 	// Scaling X,Y	
 	D3DXVECTOR2 scaling(spriteData.scale, spriteData.scale);
 	if (spriteData.flipHorizontal)  // if flip horizontal
@@ -461,7 +461,7 @@ void Graphics::changeDisplayMode(graphicsNS::DISPLAY_MODE mode)
 		reset();
 		if (fullscreen)  // fullscreen
 		{
-			ShowCursor(false);
+			//ShowCursor(false);
 			SetWindowLong(hwnd, GWL_STYLE, WS_EX_TOPMOST | WS_VISIBLE | WS_POPUP);
 		}
 		else            // windowed

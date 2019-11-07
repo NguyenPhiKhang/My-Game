@@ -81,7 +81,7 @@
       <ConformanceMode>false</ConformanceMode>
       <DisableSpecificWarnings>28251;26495</DisableSpecificWarnings>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(DXSDK_DIR)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(DXSDK_DIR)\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>NotSet</SubSystem>
@@ -131,8 +131,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\include\JsonCpp\jsoncpp.cpp" />
+    <ClCompile Include="AppleItem.cpp" />
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="dsutil.cpp" />
@@ -140,20 +143,25 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameAssignment2.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="MapGame.cpp" />
     <ClCompile Include="Paddle.cpp" />
     <ClCompile Include="Planet.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Spacewar.cpp" />
     <ClCompile Include="Square.cpp" />
+    <ClCompile Include="SultansDungeonScene.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppleItem.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="debug.h" />
@@ -162,18 +170,24 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameAssignment2.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="MapGame.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="Planet.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Spacewar.h" />
     <ClInclude Include="Square.h" />
+    <ClInclude Include="SultansDungeonScene.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\test.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

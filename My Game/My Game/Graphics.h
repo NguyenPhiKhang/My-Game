@@ -43,7 +43,7 @@ namespace graphicsNS
 	const COLOR_ARGB FILTER = D3DCOLOR_ARGB(0, 0, 0, 0);  // use to specify drawing with colorFilter
 	const COLOR_ARGB ALPHA25 = D3DCOLOR_ARGB(64, 255, 255, 255);  // AND with color to get 25% alpha
 	const COLOR_ARGB ALPHA50 = D3DCOLOR_ARGB(128, 255, 255, 255);  // AND with color to get 50% alpha
-	const COLOR_ARGB BACK_COLOR = OLIVE;                         // background color of game
+	const COLOR_ARGB BACK_COLOR = BLACK;                         // background color of game
 	const COLOR_ARGB TRANSCOLOR = MAGENTA;						// transparent color
 
 	enum DISPLAY_MODE { TOGGLE, FULLSCREEN, WINDOW };
@@ -64,6 +64,7 @@ struct VertexC				// Vertex with color
 // SpriteData: The properties required by Graphics::drawSprite to draw a sprite
 struct SpriteData
 {
+	int id;
 	int         width;      // width of sprite in pixels
 	int         height;     // height of sprite in pixels
 	float       x;          // screen location (top left corner of sprite)
@@ -76,6 +77,8 @@ struct SpriteData
 	bool        flipVertical;   // true to flip sprite vertically
 	int			direction;
 	int state;
+	float ViewportX;
+	float ViewportY;
 };
 
 class Graphics

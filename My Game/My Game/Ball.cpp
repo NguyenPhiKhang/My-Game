@@ -21,7 +21,7 @@ void Ball::update(float frameTime, bool checkPos)
 		if (spriteData.x < ballNS::WIDTH*0.5f)
 			outsideScopeLeft = true;
 		else outsideScopeRight = true;
-		Sleep(500);
+		//Sleep(500);
 		spriteData.x = GAME_WIDTH/2 - ballNS::WIDTH/2;
 		spriteData.y = GAME_HEIGHT / 2 - ballNS::HEIGHT / 2;
 		//velocity.x *= -1;

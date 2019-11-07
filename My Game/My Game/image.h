@@ -100,6 +100,11 @@ public:
 
 	virtual int getState() { return this->spriteData.state; }
 
+	virtual float getViewportX() { return this->spriteData.ViewportX; }
+	virtual float getViewportY() { return this->spriteData.ViewportY; }
+
+	virtual int getID() { return spriteData.id; }
+
 	////////////////////////////////////////
 	//           Set functions            //
 	////////////////////////////////////////
@@ -150,11 +155,16 @@ public:
 
 	virtual void setState(int state) { this->spriteData.state = state; }
 
+	virtual void setID(int id) { this->spriteData.id = id; }
+
 	// Set TextureManager
 	virtual void setTextureManager(TextureManager* textureM)
 	{
 		textureManager = textureM;
 	}
+
+	virtual void setViewportX(float viewX) { this->spriteData.ViewportX = viewX; }
+	virtual void setViewportY(float viewY) { this->spriteData.ViewportY = viewY; }
 
 	// Set direction
 	virtual void setDirection(int _direction) { spriteData.direction = _direction; }
@@ -195,6 +205,8 @@ public:
 	//   The current SpriteData.rect is used to select the texture.
 	 // textureN is number of texture in textureManager 
 	virtual void draw(SpriteData sd, COLOR_ARGB color = graphicsNS::WHITE, UINT textureN=0); // draw with SpriteData using color as filter
+
+	virtual void draw(float x, float y);
 
 	// Update the animation. frameTime is used to regulate the speed.
 	virtual void update(float frameTime, bool checkPos = false);

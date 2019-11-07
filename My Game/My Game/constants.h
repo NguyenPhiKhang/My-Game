@@ -37,6 +37,13 @@ const char SQUARE_IMAGE[] = "Resources\\square.png";	//dealine
 const char STARS_IMAGE[] = "Resources\\stars.png";
 const char BALL_IMAGE[] = "Resources\\balls_color.png";
 const char FRAME_GAME[] = "Resources\\frameGame.png";
+const char SULTAN_IMAGE[] = "Resources\\Map\\SultansDungeon\\Sultans_Dungeon_Map_bank.png";
+
+const char APPLE_ITEM_IMAGE[] = "Resources\\appleItem.png";
+
+//file json
+const char SULTAN_TILE_FILE[] = "Resources\\Map\\SultansDungeon\\tiledMap_SultansDungeon.json";
+const char SULTAN_ITEM[] = "Resources\\Map\\SultansDungeon\\item.json";
 
 
 
@@ -45,8 +52,8 @@ const char FRAME_GAME[] = "Resources\\frameGame.png";
 const char CLASS_NAME[] = "My Game";
 const char GAME_TITLE[] = "My Game";
 const bool FULLSCREEN = false;              // windowed or fullscreen
-const UINT GAME_WIDTH = 640;				// width of game in pixels
-const UINT GAME_HEIGHT = 480;               // height of game in pixels
+const UINT GAME_WIDTH = 320;				// width of game in pixels
+const UINT GAME_HEIGHT = 240;               // height of game in pixels
 const D3DXVECTOR2 POS_WINDOW = D3DXVECTOR2(100, 100);		// x, y of game
 const float TEXT_FRAME_HEIGHT = 40.0f;
 const float TEXT_FRAME_WIDTH = 16.0f;
