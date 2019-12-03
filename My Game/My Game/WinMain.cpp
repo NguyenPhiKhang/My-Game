@@ -157,8 +157,8 @@ bool CreateMainWindow(HWND& hwnd, HINSTANCE hInstance, int nCmdShow)
 		MoveWindow(hwnd,
 			(int)POS_WINDOW.x,                                           // Left
 			(int)POS_WINDOW.y,                                           // Top
-			2*GAME_WIDTH /*+ (GAME_WIDTH - clientRect.right)*/,    // Right
-			2*GAME_HEIGHT + 80 /*+ (GAME_HEIGHT - clientRect.bottom)*/, // Bottom
+			GAME_WIDTH /*+ (GAME_WIDTH - clientRect.right)*/,    // Right
+			GAME_HEIGHT /*+ (GAME_HEIGHT - clientRect.bottom)*/, // Bottom
 			TRUE);                                       // Repaint the window
 	}
 

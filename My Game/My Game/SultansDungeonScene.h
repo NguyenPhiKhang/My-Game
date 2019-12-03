@@ -40,8 +40,10 @@ private:
 	TextureManager* sultansDungeonTexture;
 	TextureManager* appleItemTexture;
 	TextureManager* testTexture;
+	TextureManager* testTexture1;
 
 	Image* test;
+	Image* test1;
 	MapGame* tileMap;
 	Camera* camera;
 	Grid* grid;

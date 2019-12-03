@@ -27,12 +27,12 @@ void MapGame::ReadMapJSON(std::string filename)
 	reader.parse(ifs, root);
 
 	const Json::Value& infoMap = root["map"];
-	ColumnsMap = infoMap["_cols"].asInt();
-	RowsMap = infoMap["_rows"].asInt();
-	tileWidth = infoMap["_tilewidth"].asInt();
-	tileHeight = infoMap["_tileheight"].asInt();
-	bankMapWidth = infoMap["_width"].asInt();
-	bankMapHeight = infoMap["_height"].asInt();
+	ColumnsMap		= infoMap["_cols"].asInt();
+	RowsMap			= infoMap["_rows"].asInt();
+	tileWidth		= infoMap["_tilewidth"].asInt();
+	tileHeight		= infoMap["_tileheight"].asInt();
+	bankMapWidth	= infoMap["_width"].asInt();
+	bankMapHeight	= infoMap["_height"].asInt();
 	const Json::Value& dataMap = infoMap["data"];
 
 	for (int i=0;i<RowsMap;i++){

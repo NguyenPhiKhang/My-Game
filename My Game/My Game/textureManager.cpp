@@ -63,7 +63,7 @@ bool TextureManager::initialize(Graphics* g, std::string file) // anha.png
 		for (UINT i = 0; i < fileNames.size(); i++)
 		{
 			hr = graphics->loadTexture(fileNames[i].c_str(),
-				graphicsNS::TRANSCOLOR, width[i], height[i], texture[i]);
+				graphicsNS::BLUE, width[i], height[i], texture[i]);
 			if (FAILED(hr))
 				success = false;    // at least one texture failed to load
 		}

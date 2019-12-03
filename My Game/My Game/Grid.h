@@ -14,8 +14,8 @@ namespace gridNS {
 	const int GRID_CELL_WIDTH = GAME_WIDTH / 4;
 	const int GRID_CELL_HEIGHT = GAME_HEIGHT / 4;
 
-	const int GRID_CELL_MAX_ROW = 100;
-	const int GRID_CELL_MAX_COLUMN = 100;
+	const int GRID_CELL_MAX_ROW = 20;
+	const int GRID_CELL_MAX_COLUMN = 30;
 }
 
 using namespace gridNS;
